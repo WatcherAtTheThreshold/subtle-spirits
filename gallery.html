@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery — Sketchy Ponderings</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Georgia', serif;
+      background-color: #1e1e1e;
+      color: #f0f0f0;
+      overflow-x: hidden;
+    }
+
+    .mist-overlay {
+      background: url('mist-tile.png') repeat;
+      opacity: 0.6;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      animation: mistScroll 120s linear infinite;
+    }
+
+    @keyframes mistScroll {
+      from { background-position: 0 0; }
+      to { background-position: -500px 500px; }
+    }
+
+    h1 {
+      text-align: center;
+      padding: 2rem;
+      font-size: 2.5rem;
+      color: #e2e2e2;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .nav a {
+      background-color: rgba(0, 0, 0, 0.4);
+      color: #fff;
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+
+    .nav a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      transform: scale(1.05);
+    }
+
+    .gallery {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3rem;
+      padding: 2rem;
+    }
+
+    .image-card {
+      width: 80vw;
+      max-width: 1000px;
+      height: 75vh;
+      background-color: #2a2a2a;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      transform: translateY(20px);
+      opacity: 0;
+      animation: fadeInUp 1s ease forwards;
+    }
+
+    .image-card:nth-child(even) {
+      animation-delay: 0.2s;
+    }
+
+    .image-card:nth-child(odd) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .image-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .caption {
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
+      color: #ccc;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.5);
+    }
+      .top-button {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 10;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .top-button:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .top-button.show {
+      display: flex;
+    }
+</style>
+</head>
+<body>
+  <div class="mist-overlay"></div>
+
+  <h1>Gallery</h1>
+  <div class="nav">
+    <a href="index.html">Home</a>
+    <a href="#gallery">Gallery</a>
+    <a href="stories.html">Stories</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <div class="gallery">
+    <div class="image-card">
+      <img src="Atrium2.png" alt="Atrium2" />
+      <div class="caption">Atrium2</div>
+    </div>
+    <div class="image-card">
+      <img src="Birch.png" alt="Birch" />
+      <div class="caption">Birch</div>
+    </div>
+    <div class="image-card">
+      <img src="BirchesWc.png" alt="BirchesWc" />
+      <div class="caption">BirchesWc</div>
+    </div>
+    <div class="image-card">
+      <img src="BirchMeadow.png" alt="BirchMeadow" />
+      <div class="caption">BirchMeadow</div>
+    </div>
+    <div class="image-card">
+      <img src="BlueLandscape.png" alt="BlueLandscape" />
+      <div class="caption">BlueLandscape</div>
+    </div>
+    <div class="image-card">
+      <img src="Chickadee.png" alt="Chickadee" />
+      <div class="caption">Chickadee</div>
+    </div>
+    <div class="image-card">
+      <img src="DylansBDayCard.png" alt="DylansBDayCard" />
+      <div class="caption">Dylan's BDay Card</div>
+    </div>
+    <div class="image-card">
+      <img src="EvenTheSmallestThings.png" alt="EvenTheSmallestThings" />
+      <div class="caption">Even The Smallest Things</div>
+    </div>
+    <div class="image-card">
+      <img src="GoldenInvitation.png" alt="GoldenInvitation" />
+      <div class="caption">Golden Invitation</div>
+    </div>
+    <div class="image-card">
+      <img src="IMG-3868.png" alt="IMG-3868" />
+      <div class="caption">IMG-3868</div>
+    </div>
+    <div class="image-card">
+      <img src="IMG-3869.png" alt="IMG-3869" />
+      <div class="caption">IMG-3869</div>
+    </div>
+    <div class="image-card">
+      <img src="IMG-3870.png" alt="IMG-3870" />
+      <div class="caption">IMG-3870</div>
+    </div>
+    <div class="image-card">
+      <img src="LaPuertaAzul.png" alt="LaPuertaAzul" />
+      <div class="caption">La Puerta Azul</div>
+    </div>
+    <div class="image-card">
+      <img src="MoonlightDoctrine.png" alt="MoonlightDoctrine" />
+      <div class="caption">Moonlight Doctrine</div>
+    </div>
+    <div class="image-card">
+      <img src="MorningPrayer.png" alt="MorningPrayer" />
+      <div class="caption">Morning Prayer</div>
+    </div>
+    <div class="image-card">
+      <img src="Nuthatch.png" alt="Nuthatch" />
+      <div class="caption">Nuthatch</div>
+    </div>
+    <div class="image-card">
+      <img src="PaintedLady.png" alt="PaintedLady" />
+      <div class="caption">Painted Lady</div>
+    </div>
+    <div class="image-card">
+      <img src="ShadowoftheMountain.png" alt="ShadowoftheMountain" />
+      <div class="caption">Shadow of the Mountain</div>
+    </div>
+    <div class="image-card">
+      <img src="Solitude.png" alt="Solitude" />
+      <div class="caption">Solitude</div>
+    </div>
+    <div class="image-card">
+      <img src="StarryBackground.png" alt="StarryBackground" />
+      <div class="caption">Starry Background</div>
+    </div>
+    <div class="image-card">
+      <img src="SummerStroll.png" alt="SummerStroll" />
+      <div class="caption">Summer Stroll</div>
+    </div>
+    <div class="image-card">
+      <img src="SunriseDoctrine.png" alt="SunriseDoctrine" />
+      <div class="caption">Sunrise Doctrine</div>
+    </div>
+    <div class="image-card">
+      <img src="TheExplorerandBlueWing.png" alt="TheExplorerandBlueWing" />
+      <div class="caption">The Explorer and Blue Wing</div>
+    </div>
+    <div class="image-card">
+      <img src="ThePaintedLady.png" alt="ThePaintedLady" />
+      <div class="caption">The Painted Lady</div>
+    </div>
+    <div class="image-card">
+      <img src="ThePokeWitch.png" alt="ThePokeWitch" />
+      <div class="caption">The Poke Witch</div>
+    </div>
+    <div class="image-card">
+      <img src="TwoChickadees.png" alt="TwoChickadees" />
+      <div class="caption">Two Chickadees</div>
+    </div>
+    <div class="image-card">
+      <img src="WizardScreen.png" alt="WizardScreen" />
+      <div class="caption">Wizard Screen</div>
+    </div>
+    <div class="image-card">
+      <img src="WoodsView.png" alt="WoodsView" />
+      <div class="caption">Woods View</div>
+    </div>
+    <div class="image-card">
+      <img src="WoodsView2Screen.png" alt="WoodsView2Screen" />
+      <div class="caption">Woods View 2</div>
+    </div>
+    <div class="image-card">
+      <img src="WorkingThrough.png" alt="WorkingThrough" />
+      <div class="caption">Working Through</div>
+    </div>
+    <div class="image-card">
+      <img src="YellowLandscape.png" alt="YellowLandscape" />
+      <div class="caption">Yellow Landscape</div>
+    </div>
+  </div>
+
+   <footer>
+    &copy; 2025 Sketchy Ponderings — quietly relentless.
+  </footer>
+  <button class="top-button" id="scrollTop" title="Back to top">↑</button>
+
+  <script>
+    const topButton = document.getElementById('scrollTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        topButton.classList.add('show');
+      } else {
+        topButton.classList.remove('show');
+      }
+    });
+
+    topButton.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
