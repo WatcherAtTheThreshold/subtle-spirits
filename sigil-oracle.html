@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sigil Oracle — Sketchy Ponderings</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Georgia', serif;
+      background-color: #1e1e1e;
+      color: #f0f0f0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      text-align: center;
+      padding-bottom: 4rem;
+    }
+
+    .mist-overlay {
+      background: url('mist-tile.png') repeat;
+      opacity: 0.6;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      animation: mistScroll 120s linear infinite;
+    }
+
+    @keyframes mistScroll {
+      from { background-position: 0 0; }
+      to { background-position: -500px 500px; }
+    }
+
+    
+    h1 {
+      text-align: center;
+      padding: 2rem;
+      font-size: 2.5rem;
+      color: #e2e2e2;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .nav a {
+      background-color: rgba(0, 0, 0, 0.4);
+      color: #fff;
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+
+    .nav a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      transform: scale(1.05);
+    }
+
+    .oracle-container {
+      padding: 2rem 1rem;
+    }
+
+    .question-input {
+      margin: 1rem auto 1.5rem;
+      padding: 0.75rem 1rem;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 5px;
+      max-width: 400px;
+      width: 80%;
+      background-color: rgba(255,255,255,0.05);
+      color: #fff;
+      text-align: center;
+    }
+
+    .question-input::placeholder {
+      color: #aaa;
+    }
+
+    .pulse-glow {
+      animation: pulse 3.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 12px rgba(255,255,255,0.1); }
+      50%  { box-shadow: 0 0 28px rgba(255,255,255,0.25); }
+      100% { box-shadow: 0 0 12px rgba(255,255,255,0.1); }
+    }
+
+    .button {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .sigil {
+      max-width: 300px;
+      margin: 2rem auto 1rem;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .phrase {
+      font-style: italic;
+      color: #ccc;
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .visible {
+      opacity: 1 !important;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="mist-overlay"></div>
+
+  <h1>Sigil Oracle</h1>
+
+  <div class="nav">
+    <a href="index.html">Home</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="stories.html">Stories</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <div class="oracle-container">
+    <input type="text" id="questionInput" class="question-input" placeholder="Ask your question (the ritual matters)..." />
+    <button class="button" onclick="drawSigil()">Reveal a Sigil</button>
+    
+    <div id="sigilBox">
+      <img id="sigilImage" class="sigil" src="" alt="Sigil">
+      <p id="sigilPhrase" class="phrase"></p>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Sketchy Ponderings — quietly relentless.
+  </footer>
+
+  <script>
+    const sigils = [
+      { img: 'images/sigil1.png', text: "The path turns, but the current remains." },
+      { img: 'images/sigil2.png', text: "What sleeps beneath still dreams of sky." },
+      { img: 'images/sigil3.png', text: "You are already answering." },
+      { img: 'images/sigil4.png', text: "Fold the question into silence." },
+      { img: 'images/sigil5.png', text: "Light has its own gravity." },
+      { img: 'images/sigil6.png', text: "Nothing is wasted when you’re listening." },
+      { img: 'images/sigil7.png', text: "Your shadow is not your enemy." },
+      { img: 'images/sigil8.png', text: "Patience is a secret language." },
+      { img: 'images/sigil9.png', text: "Something old is waiting to be named." },
+      { img: 'images/sigil10.png', text: "Begin again, but softer this time." },
+      { img: 'images/sigil11.png', text: "The unknown is not the enemy." },
+      { img: 'images/sigil12.png', text: "Every loop contains a doorway." },
+      { img: 'images/sigil13.png', text: "You’re not lost—you’re listening." },
+      { img: 'images/sigil14.png', text: "The seed remembers the sun." },
+      { img: 'images/sigil15.png', text: "What doesn’t speak still signals." },
+      { img: 'images/sigil16.png', text: "Disruption is a form of invitation." },
+      { img: 'images/sigil17.png', text: "You’ve already passed through." }
+    ];
+
+    function drawSigil() {
+      const random = sigils[Math.floor(Math.random() * sigils.length)];
+      const img = document.getElementById('sigilImage');
+      const phrase = document.getElementById('sigilPhrase');
+      const input = document.getElementById('questionInput');
+
+      // Set image and phrase
+      img.src = random.img;
+      phrase.textContent = random.text;
+
+      // Reveal
+      img.classList.add('visible');
+      phrase.classList.add('visible');
+      input.disabled = true;
+      input.classList.add('pulse-glow');
+
+      // Hide + reset after 7 seconds
+      setTimeout(() => {
+        img.classList.remove('visible');
+        phrase.classList.remove('visible');
+        input.value = '';
+        input.placeholder = "Ask your question (the ritual matters)...";
+        input.disabled = false;
+        input.classList.remove('pulse-glow');
+      }, 7000);
+    }
+  </script>
+</body>
+</html>
