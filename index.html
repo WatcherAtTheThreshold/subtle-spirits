@@ -16,6 +16,7 @@
       font-family: 'Georgia', serif;
       color: #fff;
       overflow: hidden;
+      position: relative;
     }
 
     .background {
@@ -42,24 +43,16 @@
       to { background-position: -500px 500px; }
     }
 
-    .content {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      backdrop-filter: blur(2px);
-      text-align: center;
-      padding: 2rem;
-    }
-
     .oracle-link {
+      position: absolute;
+      top: 1rem;
+      right: 1.25rem;
       font-size: 1.5rem;
-      margin-bottom: 1rem;
-      color: rgba(255, 255, 255, 0.5);
+      color: rgba(255, 255, 255, 0.6);
       text-decoration: none;
       animation: pulse-oracle 4s ease-in-out infinite;
       transition: transform 0.3s ease;
+      z-index: 10;
     }
 
     .oracle-link:hover {
@@ -73,6 +66,17 @@
       100% { opacity: 0.4; transform: scale(1); }
     }
 
+    .content {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(2px);
+      text-align: center;
+      padding: 2rem;
+    }
+
     h1 {
       font-size: 3rem;
       margin-bottom: 1rem;
@@ -82,9 +86,13 @@
 
     .nav {
       display: flex;
-      gap: 2rem;
       flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
       margin-top: 2rem;
+      padding: 0 1rem;
+      transition: max-height 0.4s ease, opacity 0.4s ease;
     }
 
     .nav a {
@@ -102,6 +110,39 @@
       transform: scale(1.05);
     }
 
+    .menu-toggle {
+      display: none;
+      position: absolute;
+      top: 1.2rem;
+      left: 1.2rem;
+      font-size: 1.5rem;
+      background: rgba(0,0,0,0.3);
+      border: none;
+      color: #fff;
+      padding: 0.5rem 0.75rem;
+      border-radius: 4px;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    @media (max-width: 600px) {
+      .nav {
+        flex-direction: column;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+      }
+
+      .nav.open {
+        max-height: 500px;
+        opacity: 1;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+    }
+
     footer {
       position: absolute;
       bottom: 1rem;
@@ -116,13 +157,15 @@
   <div class="background"></div>
   <div class="mist-overlay"></div>
 
+  <!-- Oracle glyph (top right) -->
+  <a href="sigil-oracle.html" class="oracle-link" id="oracleGlyph" title="Open the Oracle">✶</a>
+
+  <!-- Hamburger toggle (top left) -->
+  <button class="menu-toggle" id="menuToggle" title="Menu">☰</button>
+
   <div class="content">
-    <!-- ORACLE GLYPH ABOVE TITLE -->
-    <a href="sigil-oracle.html" class="oracle-link" id="oracleGlyph" title="Open the Oracle">✶</a>
-
     <h1>Sketchy Ponderings</h1>
-
-    <div class="nav">
+    <div class="nav" id="mainNav">
       <a href="gallery.html">Gallery</a>
       <a href="stories.html">Stories</a>
       <a href="about.html">About</a>
@@ -135,9 +178,17 @@
   </footer>
 
   <script>
+    // Animate oracle glyph
     const glyphs = ["✶", "🜁", "🜂", "⟁", "☍", "⟡", "∴", "✧", "🝗"];
     const chosen = glyphs[Math.floor(Math.random() * glyphs.length)];
     document.getElementById("oracleGlyph").textContent = chosen;
+
+    // Toggle mobile nav
+    const toggleBtn = document.getElementById("menuToggle");
+    const nav = document.getElementById("mainNav");
+    toggleBtn.addEventListener("click", () => {
+      nav.classList.toggle("open");
+    });
   </script>
 </body>
 </html>
