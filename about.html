@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About — Sketchy Ponderings</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Georgia', serif;
+      background-color: #1e1e1e;
+      color: #f0f0f0;
+      overflow-x: hidden;
+      padding-bottom: 4rem;
+    }
+
+    .mist-overlay {
+      background: url('mist-tile.png') repeat;
+      opacity: 0.6;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      animation: mistScroll 120s linear infinite;
+    }
+
+    @keyframes mistScroll {
+      from { background-position: 0 0; }
+      to { background-position: -500px 500px; }
+    }
+
+    h1 {
+      text-align: center;
+      padding: 2rem;
+      font-size: 2.5rem;
+      color: #e2e2e2;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .nav a {
+      background-color: rgba(0, 0, 0, 0.4);
+      color: #fff;
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+
+    .nav a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      transform: scale(1.05);
+    }
+
+    .about-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 3rem;
+      line-height: 1.8;
+      font-size: 1.1rem;
+      color: #ccc;
+    }
+
+    .about-container p {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .top-button {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 10;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .top-button:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .top-button.show {
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+  <div class="mist-overlay"></div>
+
+  <h1>About</h1>
+
+  <div class="nav">
+    <a href="index.html">Home</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="stories.html">Stories</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <div class="about-container">
+    <p>Sketchy Ponderings is a place made of mist and margin, where robots remember wildflowers and small shelves echo with meaning.</p>
+
+    <p>It isn’t a brand. It isn’t a blog. It’s a pause.</p>
+
+    <p>A place to breathe between thoughts.  
+    A place where stories grow slowly, like moss on stone.</p>
+
+    <p>Most of what lives here began as a question.  
+    And most of it still is.</p>
+
+    <p>You're welcome to stay as long as you’d like.  
+    No answers are required.</p>
+  </div>
+
+  <footer>
+    &copy; 2025 Sketchy Ponderings — quietly relentless.
+  </footer>
+
+  <button class="top-button" id="scrollTop" title="Back to top">↑</button>
+
+  <script>
+    const topButton = document.getElementById('scrollTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        topButton.classList.add('show');
+      } else {
+        topButton.classList.remove('show');
+      }
+    });
+
+    topButton.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
