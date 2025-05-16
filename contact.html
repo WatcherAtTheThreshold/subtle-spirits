@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact — Sketchy Ponderings</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Georgia', serif;
+      background-color: #1e1e1e;
+      color: #f0f0f0;
+      overflow-x: hidden;
+      padding-bottom: 4rem;
+    }
+
+    .mist-overlay {
+      background: url('mist-tile.png') repeat;
+      opacity: 0.6;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      animation: mistScroll 120s linear infinite;
+    }
+
+    @keyframes mistScroll {
+      from { background-position: 0 0; }
+      to { background-position: -500px 500px; }
+    }
+
+    h1 {
+      text-align: center;
+      padding: 2rem;
+      font-size: 2.5rem;
+      color: #e2e2e2;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .nav a {
+      background-color: rgba(0, 0, 0, 0.4);
+      color: #fff;
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+
+    .nav a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      transform: scale(1.05);
+    }
+
+    .contact-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 3rem;
+      line-height: 1.8;
+    }
+
+    .contact-container p {
+      margin-bottom: 2rem;
+      font-size: 1.15rem;
+      color: #ccc;
+      text-align: center;
+    }
+
+    .email {
+      display: inline-block;
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.05);
+      color: #f0f0f0;
+      padding: 0.75rem 1.25rem;
+      border-radius: 5px;
+      font-size: 1.15rem;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .email:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .top-button {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 10;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .top-button:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .top-button.show {
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+  <div class="mist-overlay"></div>
+
+  <h1>Contact</h1>
+
+  <div class="nav">
+    <a href="index.html">Home</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="stories.html">Stories</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <div class="contact-container">
+    <p>Have a thought, a thread, or a wandering hello?</p>
+    <p>I’d be glad to hear from you.</p>
+    <p>This space lives for quiet reflections and strange spark connections.</p>
+    <p>Reach me directly at:</p>
+    <p><a class="email" href="mailto:monahanhunt@gmail.com">monahanhunt@gmail.com</a></p>
+  </div>
+
+  <footer>
+    &copy; 2025 Sketchy Ponderings — quietly relentless.
+  </footer>
+
+  <button class="top-button" id="scrollTop" title="Back to top">↑</button>
+
+  <script>
+    const topButton = document.getElementById('scrollTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        topButton.classList.add('show');
+      } else {
+        topButton.classList.remove('show');
+      }
+    });
+
+    topButton.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
