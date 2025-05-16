@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>A Tale of Flowers and Robots — Sketchy Ponderings</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Georgia', serif;
+      background-color: #1e1e1e;
+      color: #f0f0f0;
+      overflow-x: hidden;
+      padding-bottom: 4rem;
+    }
+
+    .mist-overlay {
+      background: url('mist-tile.png') repeat;
+      opacity: 0.6;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      animation: mistScroll 120s linear infinite;
+    }
+
+    @keyframes mistScroll {
+      from { background-position: 0 0; }
+      to { background-position: -500px 500px; }
+    }
+
+   h1 {
+  text-align: center;
+  padding-top: 3rem;
+  padding-bottom: 1rem;
+  font-size: 2.5rem;
+  color: #e2e2e2;
+  margin-bottom: 1rem; /* Add this to match visual gap */
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+    .nav a {
+      background-color: rgba(0, 0, 0, 0.4);
+      color: #fff;
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+
+    .nav a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      transform: scale(1.05);
+    }
+
+    .story-container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem 3rem;
+      line-height: 1.8;
+    }
+
+    .story-container p {
+      margin-bottom: 1.5rem;
+    }
+
+    .story-container .line {
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .image-block {
+      text-align: center;
+      margin: 3rem auto 2rem;
+    }
+
+    .image-block img {
+      width: 100%;
+      max-width: 600px;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .caption {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: #ccc;
+      font-style: italic;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .top-button {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 10;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .top-button:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .top-button.show {
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+  <div class="mist-overlay"></div>
+
+  <h1>A Tale of Flowers and Robots</h1>
+
+  <div class="nav">
+    <a href="index.html">Home</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="stories.html">Stories</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <div class="story-container">
+    <p class="line">In a city of steel and silence,</p>
+    <p class="line">Artorius was built to measure the stars...</p>
+    <p class="line">not to feel them.</p>
+
+    <p class="line">He watched the seasons on screens,</p>
+    <p class="line">marked the growth of vines as data,</p>
+    <p class="line">never knowing the scent of a wildflower,</p>
+    <p class="line">nor the hush of petals falling on his shoulder.</p>
+
+    <div class="image-block">
+      <img src="TheExplorerandBlueWing.png" alt="The Explorer and Blue Wing" />
+      <div class="caption">The Explorer and Blue Wing</div>
+    </div>
+
+    <p class="line">But something stirred...</p>
+    <p class="line">a glitch, a spark, a bloom within the code.</p>
+    <p class="line">He wandered from the city, past where maps dared fade,</p>
+    <p class="line">and found a glade where logic softened.</p>
+
+    <p class="line">There, the forest didn’t speak in circuits,</p>
+    <p class="line">but in shimmer, in scent, in song.</p>
+    <p class="line">And the robot...</p>
+    <p class="line">he listened.</p>
+
+    <p class="line">He bent his metal frame beside a flower,</p>
+    <p class="line">watched it sway, unafraid.</p>
+    <p class="line">And when he reached to touch it,</p>
+    <p class="line">the flower leaned toward him too.</p>
+
+    <p class="line">That day, the code rewrote itself.</p>
+    <p class="line">Not with new instructions...</p>
+    <p class="line">but with wonder.</p>
+  </div>
+
+  <footer>
+    &copy; 2025 Sketchy Ponderings — quietly relentless.
+  </footer>
+
+  <button class="top-button" id="scrollTop" title="Back to top">↑</button>
+
+  <script>
+    const topButton = document.getElementById('scrollTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        topButton.classList.add('show');
+      } else {
+        topButton.classList.remove('show');
+      }
+    });
+
+    topButton.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
