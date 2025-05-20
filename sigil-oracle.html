@@ -186,10 +186,11 @@
 
    try {
   const response = await fetch('https://sigil-oracle-server.onrender.com/oracle', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ question })
-  });
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ question })
+});
+
 
 
 
