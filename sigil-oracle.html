@@ -169,53 +169,46 @@
     &copy; 2025 Sketchy Ponderings — quietly relentless.
   </footer>
 
-  <script>
-    const sigils = [
-      { img: 'images/sigil1.png', text: "The path turns, but the current remains." },
-      { img: 'images/sigil2.png', text: "What sleeps beneath still dreams of sky." },
-      { img: 'images/sigil3.png', text: "You are already answering." },
-      { img: 'images/sigil4.png', text: "Fold the question into silence." },
-      { img: 'images/sigil5.png', text: "Light has its own gravity." },
-      { img: 'images/sigil6.png', text: "Nothing is wasted when you’re listening." },
-      { img: 'images/sigil7.png', text: "Your shadow is not your enemy." },
-      { img: 'images/sigil8.png', text: "Patience is a secret language." },
-      { img: 'images/sigil9.png', text: "Something old is waiting to be named." },
-      { img: 'images/sigil10.png', text: "Begin again, but softer this time." },
-      { img: 'images/sigil11.png', text: "The unknown is not the enemy." },
-      { img: 'images/sigil12.png', text: "Every loop contains a doorway." },
-      { img: 'images/sigil13.png', text: "You’re not lost—you’re listening." },
-      { img: 'images/sigil14.png', text: "The seed remembers the sun." },
-      { img: 'images/sigil15.png', text: "What doesn’t speak still signals." },
-      { img: 'images/sigil16.png', text: "Disruption is a form of invitation." },
-      { img: 'images/sigil17.png', text: "You’ve already passed through." }
-    ];
+ <script>
+  async function drawSigil() {
+    const img = document.getElementById('sigilImage');
+    const phrase = document.getElementById('sigilPhrase');
+    const input = document.getElementById('questionInput');
+    const question = input.value.trim() || "No question";
 
-    function drawSigil() {
-      const random = sigils[Math.floor(Math.random() * sigils.length)];
-      const img = document.getElementById('sigilImage');
-      const phrase = document.getElementById('sigilPhrase');
-      const input = document.getElementById('questionInput');
+    // Show placeholder sigil image while waiting (optional)
+    img.src = 'images/sigil-placeholder.png';
+    img.classList.add('visible');
+    phrase.textContent = 'Listening...';
+    phrase.classList.add('visible');
+    input.disabled = true;
+    input.classList.add('pulse-glow');
 
-      // Set image and phrase
-      img.src = random.img;
-      phrase.textContent = random.text;
+    try {
+      const response = await fetch('https://sigil-oracle-server.monahanhunt.repl.co/oracle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question })
+      });
 
-      // Reveal
-      img.classList.add('visible');
-      phrase.classList.add('visible');
-      input.disabled = true;
-      input.classList.add('pulse-glow');
+      const data = await response.json();
+      phrase.textContent = data.response || 'The veil has no answer today.';
 
-      // Hide + reset after 7 seconds
-      setTimeout(() => {
-        img.classList.remove('visible');
-        phrase.classList.remove('visible');
-        input.value = '';
-        input.placeholder = "Ask your question (the ritual matters)...";
-        input.disabled = false;
-        input.classList.remove('pulse-glow');
-      }, 7000);
+    } catch (err) {
+      phrase.textContent = '⚠️ The Oracle could not be reached.';
     }
-  </script>
+
+    // Reset after 7 seconds
+    setTimeout(() => {
+      img.classList.remove('visible');
+      phrase.classList.remove('visible');
+      input.value = '';
+      input.placeholder = "Ask your question (the ritual matters)...";
+      input.disabled = false;
+      input.classList.remove('pulse-glow');
+    }, 7000);
+  }
+</script>
+
 </body>
 </html>
