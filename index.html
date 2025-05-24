@@ -16,7 +16,6 @@
       font-family: 'Georgia', serif;
       color: #fff;
       overflow: hidden;
-      position: relative;
     }
 
     .background {
@@ -54,35 +53,38 @@
       padding: 2rem;
     }
 
-    #oracleGlyph {
+    .oracle-link {
       font-size: 1.5rem;
       margin-bottom: 1rem;
-      color: rgba(255, 255, 255, 0.35);
+      color: rgba(255, 255, 255, 0.5);
       text-decoration: none;
-      transition: all 0.3s ease;
-      cursor: pointer;
+      animation: pulse-oracle 4s ease-in-out infinite;
+      transition: transform 0.3s ease;
     }
 
-    #oracleGlyph:hover {
-      color: rgba(255, 255, 255, 0.8);
+    .oracle-link:hover {
       transform: scale(1.2);
-      text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    @keyframes pulse-oracle {
+      0%   { opacity: 0.4; transform: scale(1); }
+      50%  { opacity: 1; transform: scale(1.1); }
+      100% { opacity: 0.4; transform: scale(1); }
     }
 
     h1 {
       font-size: 3rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
       color: #f2f2f2;
       text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
 
     .nav {
       display: flex;
+      gap: 2rem;
       flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      gap: 1rem;
-      flex-direction: row;
+      margin-top: 2rem;
     }
 
     .nav a {
@@ -93,26 +95,11 @@
       border-radius: 5px;
       font-size: 1.1rem;
       transition: all 0.3s ease;
-      min-width: 120px;
-      text-align: center;
     }
 
     .nav a:hover {
       background-color: rgba(255, 255, 255, 0.1);
       transform: scale(1.05);
-    }
-
-    @media (max-width: 500px) {
-      .nav {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 1rem 2rem;
-        max-width: 300px;
-      }
-
-      .nav a {
-        flex: 1 1 calc(50% - 1rem);
-      }
     }
 
     footer {
@@ -130,10 +117,13 @@
   <div class="mist-overlay"></div>
 
   <div class="content">
-    <!-- Glyph above title (easter egg but visible) -->
-    <a href="sigil-oracle.html" id="oracleGlyph" title="Open the Oracle">✶</a>
+    <!-- ORACLE GLYPH ABOVE TITLE -->
+    <a href="sigil-oracle.html" class="oracle-link" id="oracleGlyph" title="Open the Oracle">✶</a>
 
     <h1>Sketchy Ponderings</h1>
+
+    <!-- CRUXFADE PORTAL GLYPH -->
+    <a href="https://watcheratthethreshold.github.io/subtle-sprits-cruxfade/" class="oracle-link" title="Enter Cruxfade">⟁ Cruxfade</a>
 
     <div class="nav">
       <a href="gallery.html">Gallery</a>
