@@ -762,6 +762,70 @@ audio {
     gap: 0.5rem;
   }
 }
+/* Enhanced back-to-top button with smooth transitions */
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 10;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.back-to-top:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.back-to-top.show {
+  display: flex;
+}
+
+/* When now-playing bar is visible, move back-to-top button up */
+.back-to-top.music-playing {
+  bottom: 110px; /* Account for now-playing bar height (~80px) + original offset (30px) */
+}
+
+/* Mobile adjustments for the repositioned button */
+@media (max-width: 768px) {
+  .back-to-top {
+    width: 45px;
+    height: 45px;
+    font-size: 1.1rem;
+    right: 20px;
+    bottom: 25px;
+  }
+  
+  .back-to-top.music-playing {
+    bottom: 100px; /* Slightly less offset on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .back-to-top {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+    right: 15px;
+    bottom: 20px;
+  }
+  
+  .back-to-top.music-playing {
+    bottom: 95px;
+  }
+}
   </style>
 </head>
 
@@ -1714,6 +1778,45 @@ audio {
 
   <!-- JS Placeholder — your script was likely cut off -->
 <script>
+
+  <!-- JavaScript additions for dynamic positioning -->
+<script>
+// Add this function to your existing JavaScript (inside the <script> tag)
+
+// Function to update back-to-top button position based on now-playing bar visibility
+function updateBackToTopPosition() {
+  const backToTop = document.getElementById('backToTop');
+  const nowPlayingBar = document.getElementById('nowPlayingBar');
+  
+  if (!backToTop || !nowPlayingBar) return;
+  
+  // Check if now-playing bar is currently shown
+  const isNowPlayingVisible = nowPlayingBar.classList.contains('show');
+  
+  // Toggle the music-playing class to trigger CSS transition
+  backToTop.classList.toggle('music-playing', isNowPlayingVisible);
+}
+
+// Create a MutationObserver to watch for changes to the now-playing bar
+const nowPlayingObserver = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+      updateBackToTopPosition();
+    }
+  });
+});
+
+// Start observing the now-playing bar for class changes
+const nowPlayingBar = document.getElementById('nowPlayingBar');
+if (nowPlayingBar) {
+  nowPlayingObserver.observe(nowPlayingBar, {
+    attributes: true,
+    attributeFilter: ['class']
+  });
+}
+
+// Also call the function initially to set correct position
+updateBackToTopPosition();
   // Get all DOM elements
   const trackCards = document.querySelectorAll('.track-card');
   const nowPlayingBar = document.getElementById('nowPlayingBar');
