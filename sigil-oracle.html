@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sigil Oracle — Sketchy Ponderings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;700&family=Source+Sans+Pro:wght@300;400&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -12,21 +13,29 @@
     }
 
     body {
-      font-family: 'Georgia', serif;
-      background-color: #1e1e1e;
-      color: #f0f0f0;
       min-height: 100vh;
+      font-family: 'Source Sans Pro', sans-serif;
+      background-color: #0a0a0a;
+      color: #f0f0f0;
       overflow-x: hidden;
-      text-align: center;
-      padding-bottom: 4rem;
+      position: relative;
     }
 
-    .mist-overlay {
-      background: url('images/mist-tile.png') repeat;
-      opacity: 0.6;
+    .background {
+      background: rgba(20, 20, 30, 0.8);
+      opacity: 1;
       position: fixed;
       width: 100%;
       height: 100%;
+      z-index: -2;
+    }
+
+    .mist-overlay {
+      background: url('images/mist-overlay.png') repeat;
+      opacity: 0.4;
+      position: fixed;
+      width: 100%;
+      height: 250vh;
       z-index: -1;
       animation: mistScroll 120s linear infinite;
     }
@@ -36,56 +45,161 @@
       to { background-position: -500px 500px; }
     }
 
-    
-    h1 {
+    .header {
       text-align: center;
-      padding: 2rem;
-      font-size: 2.5rem;
-      color: #e2e2e2;
-    }
-
-    .nav {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      flex-wrap: wrap;
+      padding: 3rem 2rem 2rem;
+      backdrop-filter: blur(5px);
+      background: rgba(0, 0, 0, 0.2);
       margin-bottom: 2rem;
     }
 
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 500;
+      color: #f2f2f2;
+      text-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 300;
+      font-style: italic;
+    }
+
+    .nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      max-width: 600px;
+      margin: 0 auto 3rem;
+      padding: 0 2rem;
+    }
+
     .nav a {
-      background-color: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
       color: #fff;
       text-decoration: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 5px;
-      font-size: 1.1rem;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 400;
       transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .nav a:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-      transform: scale(1.05);
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .nav a.creative {
+      border-color: rgba(138, 43, 226, 0.4);
+    }
+
+    .nav a.creative:hover {
+      border-color: rgba(138, 43, 226, 0.8);
+      background: rgba(138, 43, 226, 0.1);
     }
 
     .oracle-container {
-      padding: 2rem 1rem;
-    }
-
-    .question-input {
-      margin: 1rem auto 1.5rem;
-      padding: 0.75rem 1rem;
-      font-size: 1.1rem;
-      border: none;
-      border-radius: 5px;
-      max-width: 400px;
-      width: 80%;
-      background-color: rgba(255,255,255,0.05);
-      color: #fff;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
       text-align: center;
     }
 
+    .oracle-intro {
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      padding: 2rem;
+      margin-bottom: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .oracle-intro::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, rgba(138, 43, 226, 0.6), transparent);
+    }
+
+    .oracle-intro p {
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.6;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .oracle-intro p:last-child {
+      margin-bottom: 0;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-style: italic;
+    }
+
+    .oracle-interface {
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      padding: 3rem 2rem;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .oracle-interface::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, rgba(138, 43, 226, 0.6), transparent);
+    }
+
+    .question-input {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      padding: 1rem 1.5rem;
+      font-size: 1.1rem;
+      font-family: 'Georgia', serif;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      color: #f0f0f0;
+      text-align: center;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .question-input:focus {
+      outline: none;
+      border-color: rgba(138, 43, 226, 0.6);
+      box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+    }
+
     .question-input::placeholder {
-      color: #aaa;
+      color: rgba(255, 255, 255, 0.5);
+      font-style: italic;
     }
 
     .pulse-glow {
@@ -93,81 +207,232 @@
     }
 
     @keyframes pulse {
-      0%   { box-shadow: 0 0 12px rgba(255,255,255,0.1); }
-      50%  { box-shadow: 0 0 28px rgba(255,255,255,0.25); }
-      100% { box-shadow: 0 0 12px rgba(255,255,255,0.1); }
+      0%   { box-shadow: 0 0 20px rgba(138, 43, 226, 0.3); }
+      50%  { box-shadow: 0 0 40px rgba(138, 43, 226, 0.6); }
+      100% { box-shadow: 0 0 20px rgba(138, 43, 226, 0.3); }
     }
 
-    .button {
-      background-color: rgba(255, 255, 255, 0.05);
+    .reveal-button {
+      background: rgba(138, 43, 226, 0.2);
       color: #fff;
-      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      border: 2px solid rgba(138, 43, 226, 0.4);
+      transition: all 0.3s ease;
+      font-weight: 400;
       font-size: 1.1rem;
-      border: none;
-      border-radius: 5px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      backdrop-filter: blur(10px);
     }
 
-    .button:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+    .reveal-button:hover {
+      background: rgba(138, 43, 226, 0.4);
+      border-color: rgba(138, 43, 226, 0.6);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(138, 43, 226, 0.3);
+    }
+
+    .reveal-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .sigil-display {
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
     }
 
     .sigil {
       max-width: 300px;
-      margin: 2rem auto 1rem;
+      width: 100%;
+      height: auto;
       opacity: 0;
-      transition: opacity 1s ease;
+      transition: all 1s ease;
+      filter: drop-shadow(0 0 20px rgba(138, 43, 226, 0.3));
+      border-radius: 8px;
+    }
+
+    .sigil.visible {
+      opacity: 1;
+      transform: scale(1);
     }
 
     .phrase {
+      font-family: 'Georgia', serif;
       font-style: italic;
-      color: #ccc;
-      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 1.3rem;
       max-width: 600px;
-      margin: 0 auto 2rem;
+      margin: 0 auto;
       opacity: 0;
-      transition: opacity 1s ease;
+      transition: all 1s ease;
+      line-height: 1.6;
+      text-align: center;
     }
 
-    .visible {
-      opacity: 1 !important;
+    .phrase.visible {
+      opacity: 1;
+    }
+
+    .phrase.loading {
+      color: rgba(138, 43, 226, 0.8);
+      animation: breathe 2s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    .secret-whisper {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.3);
+      font-style: italic;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .secret-whisper.show {
+      opacity: 1;
+    }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 10;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .back-to-top:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .back-to-top.show {
+      display: flex;
     }
 
     footer {
       text-align: center;
-      padding: 2rem;
+      padding: 3rem 2rem;
       font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.5);
+      color: rgba(255,255,255,0.5);
+      font-family: 'Source Sans Pro', sans-serif;
+      backdrop-filter: blur(5px);
+      background: rgba(0, 0, 0, 0.2);
+      margin-top: 3rem;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+      
+      .nav {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+      }
+      
+      .nav a {
+        padding: 0.8rem 1rem;
+        font-size: 0.9rem;
+      }
+
+      .oracle-intro,
+      .oracle-interface {
+        padding: 1.5rem;
+      }
+
+      .header {
+        padding: 2rem 1rem 1rem;
+      }
+
+      .oracle-container {
+        padding: 1rem;
+      }
+
+      .sigil {
+        max-width: 250px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav {
+        grid-template-columns: 1fr;
+      }
+
+      .phrase {
+        font-size: 1.1rem;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="background"></div>
   <div class="mist-overlay"></div>
 
-  <h1>Sigil Oracle</h1>
+  <div class="header">
+    <h1>Sigil Oracle</h1>
+    <p class="subtitle">Ancient wisdom through digital divination</p>
+  </div>
 
   <div class="nav">
     <a href="index.html">Home</a>
     <a href="gallery.html">Gallery</a>
+    <a href="games.html" class="creative">Games</a>
+    <a href="music.html" class="creative">Music</a>
     <a href="stories.html">Stories</a>
     <a href="about.html">About</a>
     <a href="contact.html">Contact</a>
   </div>
 
-  
-  
   <div class="oracle-container">
-    <input type="text" id="questionInput" class="question-input" placeholder="Ask your question (the ritual matters)..." />
-    <button class="button" onclick="drawSigil()">Reveal a Sigil</button>
-  <div id="sigilBox">
-     
-    <p id="sigilPhrase" class="phrase"></p>
-    <img id="sigilImage" class="sigil" src="" alt="Sigil">
+    <div class="oracle-intro">
+      <p>The Sigil Oracle speaks through symbol and intuition, offering guidance from the liminal spaces between knowing and unknowing.</p>
+      <p>Ask your question with intention. The ritual of asking matters as much as the answer received.</p>
+      <p>*The oracle is powered by feline wisdom and digital mysticism</p>
+    </div>
+
+    <div class="oracle-interface">
+      <input type="text" id="questionInput" class="question-input" placeholder="What question weighs on your mind?..." />
+      <button id="revealButton" class="reveal-button" onclick="drawSigil()">Consult the Oracle</button>
       
-    </div>  
-    
+      <div class="sigil-display" id="sigilBox">
+        <img id="sigilImage" class="sigil" src="" alt="Sigil">
+        <p id="sigilPhrase" class="phrase"></p>
+      </div>
+    </div>
   </div>
+
+  <div class="secret-whisper" id="secretWhisper">
+    The oracle purrs with ancient knowledge...
+  </div>
+
+  <button class="back-to-top" id="scrollTop" title="Back to top">↑</button>
 
   <footer>
     &copy; 2025 Sketchy Ponderings — quietly relentless.
@@ -184,14 +449,25 @@
     const img = document.getElementById('sigilImage');
     const phrase = document.getElementById('sigilPhrase');
     const input = document.getElementById('questionInput');
+    const button = document.getElementById('revealButton');
+    const secretWhisper = document.getElementById('secretWhisper');
     const question = input.value.trim() || "No question";
+
+    // Show secret whisper occasionally
+    if (Math.random() < 0.3) {
+      secretWhisper.classList.add('show');
+      setTimeout(() => {
+        secretWhisper.classList.remove('show');
+      }, 3000);
+    }
 
     // Loading state
     img.src = 'images/sigil-placeholder.png';
     img.classList.add('visible');
-    phrase.textContent = 'Listening...';
-    phrase.classList.add('visible');
+    phrase.textContent = 'The oracle stirs... listening to the whispers between worlds...';
+    phrase.classList.add('visible', 'loading');
     input.disabled = true;
+    button.disabled = true;
     input.classList.add('pulse-glow');
 
     try {
@@ -202,34 +478,73 @@
       });
 
       const data = await response.json();
-      phrase.textContent = data.response || 'The veil has no answer today.';
+      
+      // Remove loading animation
+      phrase.classList.remove('loading');
+      phrase.textContent = data.response || 'The veil shimmers but reveals nothing today. Perhaps the question seeks a different moment.';
 
-      // ✨ Display a random sigil
+      // Display a random sigil
       img.src = getRandomSigilPath();
     } catch (err) {
-      phrase.textContent = '⚠️ The Oracle could not be reached.';
+      phrase.classList.remove('loading');
+      phrase.textContent = '⚠️ The digital veil has fallen. The oracle retreats to its ethereal realm.';
     }
 
-    // Reset after 7 seconds
+    // Reset after 16 seconds
     setTimeout(() => {
       img.classList.remove('visible');
       phrase.classList.remove('visible');
       input.value = '';
-      input.placeholder = "Ask your question (the ritual matters)...";
+      input.placeholder = "What question weighs on your mind?...";
       input.disabled = false;
+      button.disabled = false;
       input.classList.remove('pulse-glow');
     }, 16000);
   }
-   // Enable "Enter" key to trigger drawSigil
+
+  // Enable "Enter" key to trigger drawSigil
   document.getElementById('questionInput').addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
-      event.preventDefault(); // prevent form submission or page reload
+      event.preventDefault();
       drawSigil();
     }
   });
-</script>
-</script>
 
+  // Back to top functionality
+  const topButton = document.getElementById('scrollTop');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      topButton.classList.add('show');
+    } else {
+      topButton.classList.remove('show');
+    }
+  });
+
+  topButton.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Parallax effect for mist
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const rate = scrolled * -0.3;
+    document.querySelector('.mist-overlay').style.transform = `translateY(${rate}px)`;
+  });
+
+  // Easter egg: Show secret whisper on multiple clicks
+  let clickCount = 0;
+  document.addEventListener('click', () => {
+    clickCount++;
+    if (clickCount >= 7) {
+      document.getElementById('secretWhisper').textContent = '🐱 mrow? The feline oracle acknowledges your persistence...';
+      document.getElementById('secretWhisper').classList.add('show');
+      setTimeout(() => {
+        document.getElementById('secretWhisper').classList.remove('show');
+        clickCount = 0;
+      }, 4000);
+    }
+  });
+</script>
 
 </body>
 </html>
