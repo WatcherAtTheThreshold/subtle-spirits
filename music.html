@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Music — Sketchy Ponderings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;700&family=Source+Sans+Pro:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Source Sans Pro', sans-serif;
+      background-color: #0a0a0a;
+      color: #f0f0f0;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .background {
+      background: rgba(20, 20, 30, 0.8);
+      opacity: 1;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+    }
+
+    .mist-overlay {
+      background: url('images/mist-overlay.png') repeat;
+      opacity: 0.4;
+      position: fixed;
+      width: 100%;
+      height: 250vh;
+      z-index: -1;
+      animation: mistScroll 120s linear infinite;
+    }
+
+    @keyframes mistScroll {
+      from { background-position: 0 0; }
+      to { background-position: -500px 500px; }
+    }
+
+    .header {
+      text-align: center;
+      padding: 3rem 2rem 2rem;
+      backdrop-filter: blur(5px);
+      background: rgba(0, 0, 0, 0.2);
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 500;
+      color: #f2f2f2;
+      text-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 300;
+      font-style: italic;
+    }
+
+    .nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      max-width: 600px;
+      margin: 0 auto 3rem;
+      padding: 0 2rem;
+    }
+
+    .nav a {
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      text-decoration: none;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 400;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav a:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .nav a.creative {
+      border-color: rgba(138, 43, 226, 0.4);
+    }
+
+    .nav a.creative:hover {
+      border-color: rgba(138, 43, 226, 0.8);
+      background: rgba(138, 43, 226, 0.1);
+    }
+
+    .nav a.current {
+      background: rgba(138, 43, 226, 0.2);
+      border-color: rgba(138, 43, 226, 0.6);
+    }
+
+    .music-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .intro-section {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 3rem;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .intro-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, rgba(138, 43, 226, 0.6), transparent);
+    }
+
+    .intro-section p {
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.6;
+      font-size: 1.1rem;
+    }
+
+    .playlist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .track-card {
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .track-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .track-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, rgba(138, 43, 226, 0.6), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .track-card:hover::before {
+      opacity: 1;
+    }
+
+    .track-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      color: #f2f2f2;
+    }
+
+    .track-description {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+
+    .audio-player {
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 12px;
+      padding: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .player-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .play-button {
+      background: rgba(138, 43, 226, 0.3);
+      border: 2px solid rgba(138, 43, 226, 0.6);
+      color: #fff;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1.2rem;
+    }
+
+    .play-button:hover {
+      background: rgba(138, 43, 226, 0.5);
+      border-color: rgba(138, 43, 226, 0.8);
+      transform: scale(1.05);
+    }
+
+    .play-button.playing {
+      background: rgba(138, 43, 226, 0.6);
+      border-color: rgba(138, 43, 226, 1);
+    }
+
+    .track-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .track-name {
+      font-weight: 500;
+      color: #f2f2f2;
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .track-time {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .progress-container {
+      margin-bottom: 1rem;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 3px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, rgba(138, 43, 226, 0.8), rgba(138, 43, 226, 0.6));
+      border-radius: 3px;
+      width: 0%;
+      transition: width 0.1s ease;
+    }
+
+    .volume-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .volume-icon {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1rem;
+      min-width: 16px;
+    }
+
+    .volume-slider {
+      flex: 1;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .volume-fill {
+      height: 100%;
+      background: linear-gradient(90deg, rgba(138, 43, 226, 0.8), rgba(138, 43, 226, 0.6));
+      border-radius: 2px;
+      width: 70%;
+    }
+
+    .volume-text {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.6);
+      min-width: 30px;
+      text-align: right;
+    }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 10;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .back-to-top:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .back-to-top.show {
+      display: flex;
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.5);
+      font-family: 'Source Sans Pro', sans-serif;
+      backdrop-filter: blur(5px);
+      background: rgba(0, 0, 0, 0.2);
+      margin-top: 3rem;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+      
+      .nav {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+      }
+      
+      .nav a {
+        padding: 0.8rem 1rem;
+        font-size: 0.9rem;
+      }
+
+      .playlist-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .track-card {
+        padding: 1.5rem;
+      }
+
+      .header {
+        padding: 2rem 1rem 1rem;
+      }
+
+      .music-container {
+        padding: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav {
+        grid-template-columns: 1fr;
+      }
+
+      .player-controls {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .track-info {
+        text-align: center;
+      }
+    }
+
+    /* Custom audio element styling */
+    audio {
+      display: none;
+    }
+
+    .waveform-visual {
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      margin: 0.5rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .waveform-bars {
+      display: flex;
+      align-items: end;
+      height: 100%;
+      gap: 2px;
+      padding: 4px;
+    }
+
+    .waveform-bar {
+      flex: 1;
+      background: rgba(138, 43, 226, 0.4);
+      border-radius: 1px;
+      height: 20%;
+      transition: height 0.3s ease;
+    }
+
+    .track-card:hover .waveform-bar {
+      height: 60%;
+    }
+
+    .track-card.playing .waveform-bar {
+      animation: waveAnimation 2s ease-in-out infinite;
+    }
+
+    @keyframes waveAnimation {
+      0%, 100% { height: 20%; }
+      50% { height: 80%; }
+    }
+
+    .track-card.playing .waveform-bar:nth-child(2n) {
+      animation-delay: 0.2s;
+    }
+
+    .track-card.playing .waveform-bar:nth-child(3n) {
+      animation-delay: 0.4s;
+    }
+  </style>
+</head>
+<body>
+  <div class="background"></div>
+  <div class="mist-overlay"></div>
+
+  <div class="header">
+    <h1>Music</h1>
+    <p class="subtitle">Ambient explorations & sonic sketches</p>
+  </div>
+
+  <div class="nav">
+    <a href="index.html">Home</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="games.html" class="creative">Games</a>
+    <a href="music.html" class="creative current">Music</a>
+    <a href="stories.html">Stories</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <div class="music-container">
+    <div class="intro-section">
+      <p>Musical fragments that emerge from the spaces between other creative work. These ambient pieces explore texture, atmosphere, and the quiet territories where sound becomes feeling.</p>
+    </div>
+
+    <div class="playlist-grid">
+      <div class="track-card">
+        <div class="track-title">Battle Incense</div>
+        <div class="track-description">A meditative piece exploring the tension between conflict and peace, with layers of ambient texture building toward resolution.</div>
+        <div class="waveform-visual">
+          <div class="waveform-bars">
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+          </div>
+        </div>
+        <div class="audio-player">
+          <audio src="music/BattleIncense.mp3" preload="metadata"></audio>
+          <div class="player-controls">
+            <button class="play-button" data-action="play">▶</button>
+            <div class="track-info">
+              <div class="track-name">Battle Incense</div>
+              <div class="track-time">0:00 / 0:00</div>
+            </div>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
+            </div>
+          </div>
+          <div class="volume-container">
+            <span class="volume-icon">🔊</span>
+            <div class="volume-slider">
+              <div class="volume-fill"></div>
+            </div>
+            <span class="volume-text">70%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="track-card">
+        <div class="track-title">Battle Sauce</div>
+        <div class="track-description">An energetic companion piece with driving rhythms and layered harmonics that build toward euphoric release.</div>
+        <div class="waveform-visual">
+          <div class="waveform-bars">
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+          </div>
+        </div>
+        <div class="audio-player">
+          <audio src="music/BattleSauce.mp3" preload="metadata"></audio>
+          <div class="player-controls">
+            <button class="play-button" data-action="play">▶</button>
+            <div class="track-info">
+              <div class="track-name">Battle Sauce</div>
+              <div class="track-time">0:00 / 0:00</div>
+            </div>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
+            </div>
+          </div>
+          <div class="volume-container">
+            <span class="volume-icon">🔊</span>
+            <div class="volume-slider">
+              <div class="volume-fill"></div>
+            </div>
+            <span class="volume-text">70%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="track-card">
+        <div class="track-title">Chrono Lotus</div>
+        <div class="track-description">Time suspended in ambient washes, where ancient wisdom meets digital dreams in a gentle unfoldment of sound.</div>
+        <div class="waveform-visual">
+          <div class="waveform-bars">
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+          </div>
+        </div>
+        <div class="audio-player">
+          <audio src="music/chronoLotus.mp3" preload="metadata"></audio>
+          <div class="player-controls">
+            <button class="play-button" data-action="play">▶</button>
+            <div class="track-info">
+              <div class="track-name">Chrono Lotus</div>
+              <div class="track-time">0:00 / 0:00</div>
+            </div>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
+            </div>
+          </div>
+          <div class="volume-container">
+            <span class="volume-icon">🔊</span>
+            <div class="volume-slider">
+              <div class="volume-fill"></div>
+            </div>
+            <span class="volume-text">70%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="track-card">
+        <div class="track-title">New Deal</div>
+        <div class="track-description">A fresh beginning expressed through evolving harmonic structures and unexpected sonic turns.</div>
+        <div class="waveform-visual">
+          <div class="waveform-bars">
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+          </div>
+        </div>
+        <div class="audio-player">
+          <audio src="music/newDeal.mp3" preload="metadata"></audio>
+          <div class="player-controls">
+            <button class="play-button" data-action="play">▶</button>
+            <div class="track-info">
+              <div class="track-name">New Deal</div>
+              <div class="track-time">0:00 / 0:00</div>
+            </div>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
+            </div>
+          </div>
+          <div class="volume-container">
+            <span class="volume-icon">🔊</span>
+            <div class="volume-slider">
+              <div class="volume-fill"></div>
+            </div>
+            <span class="volume-text">70%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="track-card">
+        <div class="track-title">Sunday Relief</div>
+        <div class="track-description">The exhale of the week, captured in gentle drones and warm harmonic textures that invite deep relaxation.</div>
+        <div class="waveform-visual">
+          <div class="waveform-bars">
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+          </div>
+        </div>
+        <div class="audio-player">
+          <audio src="music/SundayRelief.mp3" preload="metadata"></audio>
+          <div class="player-controls">
+            <button class="play-button" data-action="play">▶</button>
+            <div class="track-info">
+              <div class="track-name">Sunday Relief</div>
+              <div class="track-time">0:00 / 0:00</div>
+            </div>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
+            </div>
+          </div>
+          <div class="volume-container">
+            <span class="volume-icon">🔊</span>
+            <div class="volume-slider">
+              <div class="volume-fill"></div>
+            </div>
+            <span class="volume-text">70%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="track-card">
+        <div class="track-title">The Builder</div>
+        <div class="track-description">Methodical construction of sonic architecture, layer by layer, toward something greater than its parts.</div>
+        <div class="waveform-visual">
+          <div class="waveform-bars">
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+          </div>
+        </div>
+        <div class="audio-player">
+          <audio src="music/TheBuilder.mp3" preload="metadata"></audio>
+          <div class="player-controls">
+            <button class="play-button" data-action="play">▶</button>
+            <div class="track-info">
+              <div class="track-name">The Builder</div>
+              <div class="track-time">0:00 / 0:00</div>
+            </div>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
+            </div>
+          </div>
+          <div class="volume-container">
+            <span class="volume-icon">🔊</span>
+            <div class="volume-slider">
+              <div class="volume-fill"></div>
+            </div>
+            <span class="volume-text">70%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="track-card">
+        <div class="track-title">Thursday Stuff</div>
+        <div class="track-description">Mid-week meditations on routine and rhythm, finding beauty in the ordinary passage of days.</div>
+        <div class="waveform-visual">
+          <div class="waveform-bars">
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+          </div>
+        </div>
+        <div class="audio-player">
+          <audio src="music/ThursdayStuff.mp3" preload="metadata"></audio>
+          <div class="player-controls">
+            <button class="play-button" data-action="play">▶</button>
+            <div class="track-info">
+              <div class="track-name">Thursday Stuff</div>
+              <div class="track-time">0:00 / 0:00</div>
+            </div>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
+            </div>
+          </div>
+          <div class="volume-container">
+            <span class="volume-icon">🔊</span>
+            <div class="volume-slider">
+              <div class="volume-fill"></div>
+            </div>
+            <span class="volume-text">70%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="track-card">
+        <div class="track-title">Timothy Tweak</div>
+        <div class="track-description">Playful explorations in sonic adjustment and fine-tuning, where small changes create unexpected worlds.</div>
+        <div class="waveform-visual">
+          <div class="waveform-bars">
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+          </div>
+        </div>
+        <div class="audio-player">
+          <audio src="music/TimothyTweak.mp3" preload="metadata"></audio>
+          <div class="player-controls">
+            <button class="play-button" data-action="play">▶</button>
+            <div class="track-info">
+              <div class="track-name">Timothy Tweak</div>
+              <div class="track-time">0:00 / 0:00</div>
+            </div>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
+            </div>
+          </div>
+          <div class="volume-container">
+            <span class="volume-icon">🔊</span>
+            <div class="volume-slider">
+              <div class="volume-fill"></div>
+            </div>
+            <span class="volume-text">70%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="track-card">
+        <div class="track-title">Tuesday Meh</div>
+        <div class="track-description">An honest exploration of mundane moods, transformed through sound into something strangely beautiful.</div>
+        <div class="waveform-visual">
+          <div class="waveform-bars">
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+            <div class="waveform-bar"></div>
+          </div>
+        </div>
+        <div class="audio-player">
+          <audio src="music/TuesdayMeh.mp3" preload="metadata"></audio>
+          <div class="player-controls">
+            <button class="play-button" data-action="play">▶</button>
+            <div class="track-info">
+              <div class="track-name">Tuesday
