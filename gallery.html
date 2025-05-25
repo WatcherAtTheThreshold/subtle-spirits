@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gallery — Sketchy Ponderings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;700&family=Source+Sans+Pro:wght@300;400&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -13,15 +14,24 @@
 
     body {
       min-height: 100vh;
-      font-family: 'Georgia', serif;
-      background-color: #1e1e1e;
+      font-family: 'Source Sans Pro', sans-serif;
+      background-color: #0a0a0a;
       color: #f0f0f0;
       overflow-x: hidden;
     }
 
+    .background {
+      background: rgba(3, 3, 3, 0.4);
+      opacity: 1;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+    }
+
     .mist-overlay {
-      background: url('images/mist-tile.png') repeat;
-      opacity: 0.6;
+      background: url('images/mist-overlay.png') repeat;
+      opacity: 0.4;
       position: fixed;
       width: 100%;
       height: 100%;
@@ -34,63 +44,127 @@
       to { background-position: -500px 500px; }
     }
 
-    h1 {
+    .header {
       text-align: center;
-      padding: 2rem;
-      font-size: 2.5rem;
-      color: #e2e2e2;
-    }
-
-    .nav {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      flex-wrap: wrap;
+      padding: 3rem 2rem 2rem;
+      backdrop-filter: blur(5px);
+      background: rgba(0, 0, 0, 0.2);
       margin-bottom: 2rem;
     }
 
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 500;
+      color: #f2f2f2;
+      text-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 300;
+      font-style: italic;
+    }
+
+    .nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+
     .nav a {
-      background-color: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
       color: #fff;
       text-decoration: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 5px;
-      font-size: 1.1rem;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 400;
       transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .nav a:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-      transform: scale(1.05);
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .nav a.creative {
+      border-color: rgba(138, 43, 226, 0.4);
+    }
+
+    .nav a.creative:hover {
+      border-color: rgba(138, 43, 226, 0.8);
+      background: rgba(138, 43, 226, 0.1);
+    }
+
+    .nav a.current {
+      background: rgba(138, 43, 226, 0.2);
+      border-color: rgba(138, 43, 226, 0.6);
     }
 
     .gallery {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
       padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
     }
 
     .image-card {
-      width: 80vw;
-      max-width: 1000px;
-      height: 75vh;
-      background-color: #2a2a2a;
-      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
       overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s ease;
       transform: translateY(20px);
       opacity: 0;
-      animation: fadeInUp 1s ease forwards;
+      animation: fadeInUp 0.6s ease forwards;
     }
 
     .image-card:nth-child(even) {
+      animation-delay: 0.1s;
+    }
+
+    .image-card:nth-child(3n) {
       animation-delay: 0.2s;
     }
 
-    .image-card:nth-child(odd) {
-      animation-delay: 0.4s;
+    .image-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .image-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, rgba(138, 43, 226, 0.6), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .image-card:hover::before {
+      opacity: 1;
     }
 
     @keyframes fadeInUp {
@@ -100,199 +174,374 @@
       }
     }
 
+    .image-container {
+      aspect-ratio: 4/3;
+      overflow: hidden;
+    }
+
     .image-card img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
       display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .image-card:hover img {
+      transform: scale(1.02);
     }
 
     .caption {
-      padding: 0.75rem 1rem;
-      font-size: 0.95rem;
-      color: #ccc;
+      padding: 1rem;
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.9);
       text-align: center;
-      background-color: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(5px);
+      font-weight: 400;
     }
 
-    footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.9rem;
-      color: rgba(255,255,255,0.5);
-    }
-      .top-button {
+    .back-to-top {
       position: fixed;
       bottom: 30px;
       right: 30px;
-      background-color: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
       color: #fff;
-      border: none;
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 50%;
-      width: 48px;
-      height: 48px;
-      font-size: 1.5rem;
+      width: 50px;
+      height: 50px;
+      font-size: 1.2rem;
       cursor: pointer;
       z-index: 10;
       display: none;
       align-items: center;
       justify-content: center;
-      transition: background-color 0.3s ease;
+      transition: all 0.3s ease;
     }
 
-    .top-button:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+    .back-to-top:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-2px);
     }
 
-    .top-button.show {
+    .back-to-top.show {
       display: flex;
     }
-</style>
+
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.5);
+      font-family: 'Source Sans Pro', sans-serif;
+      backdrop-filter: blur(5px);
+      background: rgba(0, 0, 0, 0.2);
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+      
+      .nav {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+      }
+      
+      .nav a {
+        padding: 0.8rem 1rem;
+        font-size: 0.9rem;
+      }
+
+      .gallery {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1rem;
+      }
+
+      .header {
+        padding: 2rem 1rem 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Lightbox styles */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(10px);
+    }
+
+    .lightbox-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    .lightbox img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 35px;
+      color: #fff;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .lightbox-close:hover {
+      color: rgba(138, 43, 226, 0.8);
+    }
+  </style>
 </head>
 <body>
+  <div class="background"></div>
   <div class="mist-overlay"></div>
 
-  <h1>Gallery</h1>
+  <div class="header">
+    <h1>Gallery</h1>
+    <p class="subtitle">Visual explorations from the threshold</p>
+  </div>
+
   <div class="nav">
     <a href="index.html">Home</a>
-    <a href="#gallery">Gallery</a>
+    <a href="gallery.html" class="current">Gallery</a>
+    <a href="games.html" class="creative">Games</a>
+    <a href="music.html" class="creative">Music</a>
     <a href="stories.html">Stories</a>
+    <a href="about.html">About</a>
     <a href="contact.html">Contact</a>
   </div>
 
   <div class="gallery">
-    <div class="image-card">
-      <img src="images/Atrium2.png" alt="Atrium2" />
+    <div class="image-card" onclick="openLightbox('images/Atrium2.png', 'Atrium2')">
+      <div class="image-container">
+        <img src="images/Atrium2.png" alt="Atrium2" />
+      </div>
       <div class="caption">Atrium2</div>
     </div>
-    <div class="image-card">
-      <img src="images/Birch.png" alt="Birch" />
+    <div class="image-card" onclick="openLightbox('images/Birch.png', 'Birch')">
+      <div class="image-container">
+        <img src="images/Birch.png" alt="Birch" />
+      </div>
       <div class="caption">Birch</div>
     </div>
-    <div class="image-card">
-      <img src="images/BirchesWc.png" alt="BirchesWc" />
+    <div class="image-card" onclick="openLightbox('images/BirchesWc.png', 'BirchesWc')">
+      <div class="image-container">
+        <img src="images/BirchesWc.png" alt="BirchesWc" />
+      </div>
       <div class="caption">BirchesWc</div>
     </div>
-    <div class="image-card">
-      <img src="images/BirchMeadow.png" alt="BirchMeadow" />
-      <div class="caption">BirchMeadow</div>
+    <div class="image-card" onclick="openLightbox('images/BirchMeadow.png', 'BirchMeadow')">
+      <div class="image-container">
+        <img src="images/BirchMeadow.png" alt="BirchMeadow" />
+      </div>
+      <div class="caption">Birch Meadow</div>
     </div>
-    <div class="image-card">
-      <img src="images/BlueLandscape.png" alt="BlueLandscape" />
-      <div class="caption">BlueLandscape</div>
+    <div class="image-card" onclick="openLightbox('images/BlueLandscape.png', 'BlueLandscape')">
+      <div class="image-container">
+        <img src="images/BlueLandscape.png" alt="BlueLandscape" />
+      </div>
+      <div class="caption">Blue Landscape</div>
     </div>
-    <div class="image-card">
-      <img src="images/Chickadee.png" alt="Chickadee" />
+    <div class="image-card" onclick="openLightbox('images/Chickadee.png', 'Chickadee')">
+      <div class="image-container">
+        <img src="images/Chickadee.png" alt="Chickadee" />
+      </div>
       <div class="caption">Chickadee</div>
     </div>
-    <div class="image-card">
-      <img src="images/DylansBDayCard.png" alt="DylansBDayCard" />
-      <div class="caption">Dylan's BDay Card</div>
+    <div class="image-card" onclick="openLightbox('images/DylansBDayCard.png', 'DylansBDayCard')">
+      <div class="image-container">
+        <img src="images/DylansBDayCard.png" alt="DylansBDayCard" />
+      </div>
+      <div class="caption">Dylan's Birthday Card</div>
     </div>
-    <div class="image-card">
-      <img src="images/EvenTheSmallestThings.png" alt="EvenTheSmallestThings" />
+    <div class="image-card" onclick="openLightbox('images/EvenTheSmallestThings.png', 'EvenTheSmallestThings')">
+      <div class="image-container">
+        <img src="images/EvenTheSmallestThings.png" alt="EvenTheSmallestThings" />
+      </div>
       <div class="caption">Even The Smallest Things</div>
     </div>
-    <div class="image-card">
-      <img src="images/GoldenInvitation.png" alt="GoldenInvitation" />
+    <div class="image-card" onclick="openLightbox('images/GoldenInvitation.png', 'GoldenInvitation')">
+      <div class="image-container">
+        <img src="images/GoldenInvitation.png" alt="GoldenInvitation" />
+      </div>
       <div class="caption">Golden Invitation</div>
     </div>
-    <div class="image-card">
-      <img src="images/IMG-3868.png" alt="IMG-3868" />
-      <div class="caption">IMG-3868</div>
+    <div class="image-card" onclick="openLightbox('images/IMG-3868.png', 'IMG-3868')">
+      <div class="image-container">
+        <img src="images/IMG-3868.png" alt="IMG-3868" />
+      </div>
+      <div class="caption">Untitled Study</div>
     </div>
-    <div class="image-card">
-      <img src="images/IMG-3869.png" alt="IMG-3869" />
-      <div class="caption">IMG-3869</div>
+    <div class="image-card" onclick="openLightbox('images/IMG-3869.png', 'IMG-3869')">
+      <div class="image-container">
+        <img src="images/IMG-3869.png" alt="IMG-3869" />
+      </div>
+      <div class="caption">Untitled Study</div>
     </div>
-    <div class="image-card">
-      <img src="images/IMG-3870.png" alt="IMG-3870" />
-      <div class="caption">IMG-3870</div>
+    <div class="image-card" onclick="openLightbox('images/IMG-3870.png', 'IMG-3870')">
+      <div class="image-container">
+        <img src="images/IMG-3870.png" alt="IMG-3870" />
+      </div>
+      <div class="caption">Untitled Study</div>
     </div>
-    <div class="image-card">
-      <img src="images/LaPuertaAzul.png" alt="LaPuertaAzul" />
+    <div class="image-card" onclick="openLightbox('images/LaPuertaAzul.png', 'LaPuertaAzul')">
+      <div class="image-container">
+        <img src="images/LaPuertaAzul.png" alt="LaPuertaAzul" />
+      </div>
       <div class="caption">La Puerta Azul</div>
     </div>
-    <div class="image-card">
-      <img src="images/MoonlightDoctrine.png" alt="MoonlightDoctrine" />
+    <div class="image-card" onclick="openLightbox('images/MoonlightDoctrine.png', 'MoonlightDoctrine')">
+      <div class="image-container">
+        <img src="images/MoonlightDoctrine.png" alt="MoonlightDoctrine" />
+      </div>
       <div class="caption">Moonlight Doctrine</div>
     </div>
-    <div class="image-card">
-      <img src="images/MorningPrayer.png" alt="MorningPrayer" />
+    <div class="image-card" onclick="openLightbox('images/MorningPrayer.png', 'MorningPrayer')">
+      <div class="image-container">
+        <img src="images/MorningPrayer.png" alt="MorningPrayer" />
+      </div>
       <div class="caption">Morning Prayer</div>
     </div>
-    <div class="image-card">
-      <img src="images/Nuthatch.png" alt="Nuthatch" />
+    <div class="image-card" onclick="openLightbox('images/Nuthatch.png', 'Nuthatch')">
+      <div class="image-container">
+        <img src="images/Nuthatch.png" alt="Nuthatch" />
+      </div>
       <div class="caption">Nuthatch</div>
     </div>
-    <div class="image-card">
-      <img src="images/PaintedLady.png" alt="PaintedLady" />
+    <div class="image-card" onclick="openLightbox('images/PaintedLady.png', 'PaintedLady')">
+      <div class="image-container">
+        <img src="images/PaintedLady.png" alt="PaintedLady" />
+      </div>
       <div class="caption">Painted Lady</div>
     </div>
-    <div class="image-card">
-      <img src="images/ShadowoftheMountain.png" alt="ShadowoftheMountain" />
+    <div class="image-card" onclick="openLightbox('images/ShadowoftheMountain.png', 'ShadowoftheMountain')">
+      <div class="image-container">
+        <img src="images/ShadowoftheMountain.png" alt="ShadowoftheMountain" />
+      </div>
       <div class="caption">Shadow of the Mountain</div>
     </div>
-    <div class="image-card">
-      <img src="images/Solitude.png" alt="Solitude" />
+    <div class="image-card" onclick="openLightbox('images/Solitude.png', 'Solitude')">
+      <div class="image-container">
+        <img src="images/Solitude.png" alt="Solitude" />
+      </div>
       <div class="caption">Solitude</div>
     </div>
-    <div class="image-card">
-      <img src="images/StarryBackground.png" alt="StarryBackground" />
+    <div class="image-card" onclick="openLightbox('images/StarryBackground.png', 'StarryBackground')">
+      <div class="image-container">
+        <img src="images/StarryBackground.png" alt="StarryBackground" />
+      </div>
       <div class="caption">Starry Background</div>
     </div>
-    <div class="image-card">
-      <img src="images/SummerStroll.png" alt="SummerStroll" />
+    <div class="image-card" onclick="openLightbox('images/SummerStroll.png', 'SummerStroll')">
+      <div class="image-container">
+        <img src="images/SummerStroll.png" alt="SummerStroll" />
+      </div>
       <div class="caption">Summer Stroll</div>
     </div>
-    <div class="image-card">
-      <img src="images/SunriseDoctrine.png" alt="SunriseDoctrine" />
+    <div class="image-card" onclick="openLightbox('images/SunriseDoctrine.png', 'SunriseDoctrine')">
+      <div class="image-container">
+        <img src="images/SunriseDoctrine.png" alt="SunriseDoctrine" />
+      </div>
       <div class="caption">Sunrise Doctrine</div>
     </div>
-    <div class="image-card">
-      <img src="images/TheExplorerandBlueWing.png" alt="TheExplorerandBlueWing" />
+    <div class="image-card" onclick="openLightbox('images/TheExplorerandBlueWing.png', 'TheExplorerandBlueWing')">
+      <div class="image-container">
+        <img src="images/TheExplorerandBlueWing.png" alt="TheExplorerandBlueWing" />
+      </div>
       <div class="caption">The Explorer and Blue Wing</div>
     </div>
-    <div class="image-card">
-      <img src="images/ThePaintedLady.png" alt="ThePaintedLady" />
+    <div class="image-card" onclick="openLightbox('images/ThePaintedLady.png', 'ThePaintedLady')">
+      <div class="image-container">
+        <img src="images/ThePaintedLady.png" alt="ThePaintedLady" />
+      </div>
       <div class="caption">The Painted Lady</div>
     </div>
-    <div class="image-card">
-      <img src="images/ThePokeWitch.png" alt="ThePokeWitch" />
+    <div class="image-card" onclick="openLightbox('images/ThePokeWitch.png', 'ThePokeWitch')">
+      <div class="image-container">
+        <img src="images/ThePokeWitch.png" alt="ThePokeWitch" />
+      </div>
       <div class="caption">The Poke Witch</div>
     </div>
-    <div class="image-card">
-      <img src="images/TwoChickadees.png" alt="TwoChickadees" />
+    <div class="image-card" onclick="openLightbox('images/TwoChickadees.png', 'TwoChickadees')">
+      <div class="image-container">
+        <img src="images/TwoChickadees.png" alt="TwoChickadees" />
+      </div>
       <div class="caption">Two Chickadees</div>
     </div>
-    <div class="image-card">
-      <img src="images/WizardScreen.png" alt="WizardScreen" />
+    <div class="image-card" onclick="openLightbox('images/WizardScreen.png', 'WizardScreen')">
+      <div class="image-container">
+        <img src="images/WizardScreen.png" alt="WizardScreen" />
+      </div>
       <div class="caption">Wizard Screen</div>
     </div>
-    <div class="image-card">
-      <img src="images/WoodsView.png" alt="WoodsView" />
+    <div class="image-card" onclick="openLightbox('images/WoodsView.png', 'WoodsView')">
+      <div class="image-container">
+        <img src="images/WoodsView.png" alt="WoodsView" />
+      </div>
       <div class="caption">Woods View</div>
     </div>
-    <div class="image-card">
-      <img src="images/WoodsView2Screen.png" alt="WoodsView2Screen" />
+    <div class="image-card" onclick="openLightbox('images/WoodsView2Screen.png', 'WoodsView2Screen')">
+      <div class="image-container">
+        <img src="images/WoodsView2Screen.png" alt="WoodsView2Screen" />
+      </div>
       <div class="caption">Woods View 2</div>
     </div>
-    <div class="image-card">
-      <img src="images/WorkingThrough.png" alt="WorkingThrough" />
+    <div class="image-card" onclick="openLightbox('images/WorkingThrough.png', 'WorkingThrough')">
+      <div class="image-container">
+        <img src="images/WorkingThrough.png" alt="WorkingThrough" />
+      </div>
       <div class="caption">Working Through</div>
     </div>
-    <div class="image-card">
-      <img src="images/YellowLandscape.png" alt="YellowLandscape" />
+    <div class="image-card" onclick="openLightbox('images/YellowLandscape.png', 'YellowLandscape')">
+      <div class="image-container">
+        <img src="images/YellowLandscape.png" alt="YellowLandscape" />
+      </div>
       <div class="caption">Yellow Landscape</div>
     </div>
   </div>
 
-   <footer>
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+    <div class="lightbox-content">
+      <img id="lightbox-img" src="" alt="">
+    </div>
+  </div>
+
+  <button class="back-to-top" id="scrollTop" title="Back to top">↑</button>
+
+  <footer>
     &copy; 2025 Sketchy Ponderings — quietly relentless.
   </footer>
-  <button class="top-button" id="scrollTop" title="Back to top">↑</button>
 
   <script>
+    // Back to top functionality
     const topButton = document.getElementById('scrollTop');
     window.addEventListener('scroll', () => {
       if (window.scrollY > 300) {
@@ -304,6 +553,36 @@
 
     topButton.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Lightbox functionality
+    function openLightbox(imageSrc, imageAlt) {
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      lightboxImg.src = imageSrc;
+      lightboxImg.alt = imageAlt;
+      lightbox.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      const lightbox = document.getElementById('lightbox');
+      lightbox.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    // Close lightbox with Escape key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        closeLightbox();
+      }
+    });
+
+    // Parallax effect for mist
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const rate = scrolled * -0.3;
+      document.querySelector('.mist-overlay').style.transform = `translateY(${rate}px)`;
     });
   </script>
 </body>
