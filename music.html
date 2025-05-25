@@ -1714,6 +1714,7 @@ audio {
 
   <!-- JS Placeholder — your script was likely cut off -->
 <script>
+  // Get all DOM elements
   const trackCards = document.querySelectorAll('.track-card');
   const nowPlayingBar = document.getElementById('nowPlayingBar');
   const nowPlayingTitle = document.getElementById('nowPlayingTitle');
@@ -1722,6 +1723,7 @@ audio {
   const trackCounter = document.getElementById('trackCounter');
   const backToTop = document.getElementById('backToTop');
 
+  // Global state variables
   let currentTrack = null;
   let currentCard = null;
   let isContinuous = false;
@@ -1729,6 +1731,7 @@ audio {
   let isShuffling = false;
   let allTracks = [];
 
+  // Playlist control event listeners
   document.getElementById('continuousToggle').addEventListener('click', () => {
     isContinuous = !isContinuous;
     document.getElementById('continuousToggle').classList.toggle('active', isContinuous);
@@ -1757,6 +1760,7 @@ audio {
     document.getElementById('shuffleButton').classList.remove('active');
   });
 
+  // Initialize track cards and their event listeners
   trackCards.forEach((card) => {
     const audio = card.querySelector('audio');
     const playButton = card.querySelector('.play-button');
@@ -1767,48 +1771,65 @@ audio {
     const volumeText = card.querySelector('.volume-text');
     const trackTime = card.querySelector('.track-time');
 
+    // Add to tracks array
     allTracks.push({ card, audio });
 
+    // Individual card play button logic
     playButton.addEventListener('click', () => {
+      // If this track is currently playing, pause it
       if (audio === currentTrack && !audio.paused) {
         audio.pause();
         playButton.textContent = '▶';
         globalPlayButton.textContent = '▶';
+        card.classList.remove('playing');
         return;
       }
 
+      // Stop all other tracks
       stopAllTracks();
+
+      // Play this track
       audio.play();
       currentTrack = audio;
       currentCard = card;
 
+      // Update visual states
       card.classList.add('playing');
       playButton.textContent = '⏸';
       globalPlayButton.textContent = '⏸';
 
+      // Show now-playing bar
       nowPlayingBar.classList.add('show');
       nowPlayingTitle.textContent = card.querySelector('.track-name').textContent;
 
       updateTrackCounter();
     });
 
+    // Audio time update handler
     audio.addEventListener('timeupdate', () => {
       const percent = (audio.currentTime / audio.duration) * 100;
       progressFill.style.width = percent + '%';
       nowPlayingFill.style.width = percent + '%';
-      updateTimeDisplay();
 
-
+      // Update time displays
       const formatTime = t => isNaN(t) ? '0:00' : `${Math.floor(t / 60)}:${('0' + Math.floor(t % 60)).slice(-2)}`;
       trackTime.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+      
+      // Update the global time display if it exists
+      const timeDisplay = document.getElementById('timeDisplay');
+      if (timeDisplay) {
+        timeDisplay.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+      }
     });
 
+    // Progress bar click handler
     progressBar.addEventListener('click', e => {
       const rect = progressBar.getBoundingClientRect();
       const percent = (e.clientX - rect.left) / rect.width;
       audio.currentTime = percent * audio.duration;
     });
 
+    // Volume slider click handler
     volumeSlider.addEventListener('click', e => {
       const rect = volumeSlider.getBoundingClientRect();
       const percent = (e.clientX - rect.left) / rect.width;
@@ -1817,13 +1838,18 @@ audio {
       volumeText.textContent = `${Math.round(percent * 100)}%`;
     });
 
+    // Audio ended handler
     audio.addEventListener('ended', () => {
       playButton.textContent = '▶';
+      globalPlayButton.textContent = '▶';
       card.classList.remove('playing');
 
       if (isLooping) {
         audio.currentTime = 0;
         audio.play();
+        playButton.textContent = '⏸';
+        globalPlayButton.textContent = '⏸';
+        card.classList.add('playing');
         return;
       }
 
@@ -1844,11 +1870,66 @@ audio {
     });
   });
 
+  // Global play/pause button logic
   globalPlayButton.addEventListener('click', () => {
-    if (!currentTrack) return;
-    currentCard.querySelector('.play-button').click();
+    // If no track has been selected yet, start with the first track
+    if (!currentTrack) {
+      const firstTrack = allTracks[0];
+      if (firstTrack) {
+        firstTrack.card.querySelector('.play-button').click();
+      }
+      return;
+    }
+
+    // If there's a current track, directly control its playback
+    if (currentTrack.paused) {
+      // Play the current track
+      currentTrack.play();
+      globalPlayButton.textContent = '⏸';
+      
+      // Update the individual card's button to match
+      if (currentCard) {
+        const cardPlayButton = currentCard.querySelector('.play-button');
+        cardPlayButton.textContent = '⏸';
+        currentCard.classList.add('playing');
+      }
+    } else {
+      // Pause the current track
+      currentTrack.pause();
+      globalPlayButton.textContent = '▶';
+      
+      // Update the individual card's button to match
+      if (currentCard) {
+        const cardPlayButton = currentCard.querySelector('.play-button');
+        cardPlayButton.textContent = '▶';
+        currentCard.classList.remove('playing');
+      }
+    }
   });
 
+  // Previous track button
+  const prevTrackButton = document.getElementById('prevTrackButton');
+  if (prevTrackButton) {
+    prevTrackButton.addEventListener('click', () => {
+      if (!currentTrack) return;
+      const currentIndex = allTracks.findIndex(t => t.audio === currentTrack);
+      const prevIndex = (currentIndex - 1 + allTracks.length) % allTracks.length;
+      allTracks[prevIndex].card.querySelector('.play-button').click();
+    });
+  }
+
+  // Next track button
+  const nextTrackButton = document.getElementById('nextTrackButton');
+  if (nextTrackButton) {
+    nextTrackButton.addEventListener('click', () => {
+      if (!currentTrack) return;
+      const currentIndex = allTracks.findIndex(t => t.audio === currentTrack);
+      const nextIndex = (currentIndex + 1) % allTracks.length;
+      allTracks[nextIndex].card.querySelector('.play-button').click();
+    });
+  }
+
+  // Back to top button functionality
   window.addEventListener('scroll', () => {
     backToTop.classList.toggle('show', window.scrollY > 300);
   });
@@ -1857,6 +1938,7 @@ audio {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
+  // Utility functions
   function stopAllTracks() {
     trackCards.forEach(card => {
       const audio = card.querySelector('audio');
@@ -1868,37 +1950,16 @@ audio {
   }
 
   function updateTrackCounter() {
+    if (!currentTrack) {
+      trackCounter.textContent = '0 / 0';
+      return;
+    }
     const index = allTracks.findIndex(t => t.audio === currentTrack);
     trackCounter.textContent = `${index + 1} / ${allTracks.length}`;
   }
 
+  // Initialize track counter
   updateTrackCounter();
-function updateTimeDisplay() {
-  if (!currentTrack) return;
-  const formatTime = t => isNaN(t) ? '0:00' : `${Math.floor(t / 60)}:${('0' + Math.floor(t % 60)).slice(-2)}`;
-  document.getElementById('timeDisplay').textContent =
-    `${formatTime(currentTrack.currentTime)} / ${formatTime(currentTrack.duration)}`;
-}
-
-globalPlayButton.addEventListener('click', () => {
-  if (!currentTrack) return;
-  currentCard.querySelector('.play-button').click();
-});
-
-document.getElementById('prevTrackButton').addEventListener('click', () => {
-  if (!currentTrack) return;
-  const index = allTracks.findIndex(t => t.audio === currentTrack);
-  const prevIndex = (index - 1 + allTracks.length) % allTracks.length;
-  allTracks[prevIndex].card.querySelector('.play-button').click();
-});
-
-document.getElementById('nextTrackButton').addEventListener('click', () => {
-  if (!currentTrack) return;
-  const index = allTracks.findIndex(t => t.audio === currentTrack);
-  const nextIndex = (index + 1) % allTracks.length;
-  allTracks[nextIndex].card.querySelector('.play-button').click();
-});
-
 </script>
 
 
