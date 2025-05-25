@@ -609,13 +609,162 @@
   </footer>
 
   <!-- JS Placeholder — your script was likely cut off -->
-  <script>
-    // TODO: Restore or reattach your JavaScript logic for:
-    // - handling play buttons
-    // - updating now playing bar
-    // - toggling continuous play, shuffle, repeat
-    // - managing volume, progress, back-to-top behavior, etc.
-  </script>
+ <script>
+  const trackCards = document.querySelectorAll('.track-card');
+  const nowPlayingBar = document.getElementById('nowPlayingBar');
+  const nowPlayingTitle = document.getElementById('nowPlayingTitle');
+  const nowPlayingFill = document.getElementById('nowPlayingFill');
+  const globalPlayButton = document.getElementById('globalPlayButton');
+  const trackCounter = document.getElementById('trackCounter');
+  const backToTop = document.getElementById('backToTop');
+
+  let currentTrack = null;
+  let currentCard = null;
+  let isContinuous = false;
+  let isLooping = false;
+  let allTracks = [];
+
+  document.getElementById('continuousToggle').addEventListener('click', () => {
+    isContinuous = !isContinuous;
+    document.getElementById('continuousToggle').classList.toggle('active', isContinuous);
+    document.getElementById('toggleSwitch').classList.toggle('active', isContinuous);
+  });
+
+  document.getElementById('loopToggle').addEventListener('click', () => {
+    isLooping = !isLooping;
+    document.getElementById('loopToggle').classList.toggle('active', isLooping);
+    document.getElementById('loopSwitch').classList.toggle('active', isLooping);
+  });
+
+  document.getElementById('shuffleButton').addEventListener('click', () => {
+    allTracks = Array.from(trackCards).sort(() => Math.random() - 0.5);
+    updateTrackCounter();
+  });
+
+  document.getElementById('repeatButton').addEventListener('click', () => {
+    isLooping = true;
+    isContinuous = true;
+    document.getElementById('loopToggle').classList.add('active');
+    document.getElementById('continuousToggle').classList.add('active');
+    document.getElementById('loopSwitch').classList.add('active');
+    document.getElementById('toggleSwitch').classList.add('active');
+  });
+
+  trackCards.forEach((card, index) => {
+    const audio = card.querySelector('audio');
+    const playButton = card.querySelector('.play-button');
+    const progressBar = card.querySelector('.progress-bar');
+    const progressFill = card.querySelector('.progress-fill');
+    const volumeSlider = card.querySelector('.volume-slider');
+    const volumeFill = card.querySelector('.volume-fill');
+    const volumeText = card.querySelector('.volume-text');
+    const trackTime = card.querySelector('.track-time');
+
+    allTracks.push({ card, audio });
+
+    // Click play/pause
+    playButton.addEventListener('click', () => {
+      if (audio === currentTrack && !audio.paused) {
+        audio.pause();
+        playButton.textContent = '▶';
+        globalPlayButton.textContent = '▶';
+        return;
+      }
+
+      stopAllTracks();
+      audio.play();
+      currentTrack = audio;
+      currentCard = card;
+
+      card.classList.add('playing');
+      playButton.textContent = '⏸';
+      globalPlayButton.textContent = '⏸';
+
+      nowPlayingBar.classList.add('show');
+      nowPlayingTitle.textContent = card.querySelector('.track-name').textContent;
+
+      updateTrackCounter();
+    });
+
+    // Progress tracking
+    audio.addEventListener('timeupdate', () => {
+      const percent = (audio.currentTime / audio.duration) * 100;
+      progressFill.style.width = percent + '%';
+      nowPlayingFill.style.width = percent + '%';
+
+      const formatTime = t => isNaN(t) ? '0:00' : `${Math.floor(t / 60)}:${('0' + Math.floor(t % 60)).slice(-2)}`;
+      trackTime.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+    });
+
+    // Click to scrub
+    progressBar.addEventListener('click', e => {
+      const rect = progressBar.getBoundingClientRect();
+      const percent = (e.clientX - rect.left) / rect.width;
+      audio.currentTime = percent * audio.duration;
+    });
+
+    // Volume control
+    volumeSlider.addEventListener('click', e => {
+      const rect = volumeSlider.getBoundingClientRect();
+      const percent = (e.clientX - rect.left) / rect.width;
+      audio.volume = percent;
+      volumeFill.style.width = `${percent * 100}%`;
+      volumeText.textContent = `${Math.round(percent * 100)}%`;
+    });
+
+    // Autoplay next track
+    audio.addEventListener('ended', () => {
+      playButton.textContent = '▶';
+      card.classList.remove('playing');
+
+      if (isLooping) {
+        audio.currentTime = 0;
+        audio.play();
+        return;
+      }
+
+      if (isContinuous) {
+        let nextIndex = (allTracks.findIndex(t => t.audio === audio) + 1) % allTracks.length;
+        allTracks[nextIndex].card.querySelector('.play-button').click();
+      }
+    });
+  });
+
+  // Global Play/Pause
+  globalPlayButton.addEventListener('click', () => {
+    if (!currentTrack) return;
+    const playBtn = currentCard.querySelector('.play-button');
+    playBtn.click();
+  });
+
+  // Back to top
+  window.addEventListener('scroll', () => {
+    backToTop.classList.toggle('show', window.scrollY > 300);
+  });
+
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  function stopAllTracks() {
+    trackCards.forEach(card => {
+      const audio = card.querySelector('audio');
+      const button = card.querySelector('.play-button');
+      card.classList.remove('playing');
+      audio.pause();
+      button.textContent = '▶';
+    });
+  }
+
+  function updateTrackCounter() {
+    const index = allTracks.findIndex(t => t.audio === currentTrack);
+    trackCounter.textContent = `${index + 1} / ${allTracks.length}`;
+  }
+
+  // Init
+  updateTrackCounter();
+</script>
+
 
 </body>
 </html>
