@@ -1557,14 +1557,15 @@ audio {
 
   <!-- Now Playing Bar -->
   <div class="now-playing-bar" id="nowPlayingBar">
-    <div class="global-play-button" id="globalPlayButton">▶</div>
-    <div class="now-playing-info">
-      <div class="now-playing-title" id="nowPlayingTitle">No Track Playing</div>
-      <div class="now-playing-progress">
-        <div class="now-playing-fill" id="nowPlayingFill"></div>
-      </div>
-    </div>
-    <div class="track-counter" id="trackCounter">0 / 0</div>
+   <div class="global-play-button" id="globalPlayButton">▶</div>
+<div class="now-playing-info">
+  <div class="now-playing-title" id="nowPlayingTitle">No Track Playing</div>
+  <div class="now-playing-progress">
+    <div class="now-playing-fill" id="nowPlayingFill"></div>
+  </div>
+</div>
+<div class="track-counter" id="trackCounter">0 / 0</div>
+
   </div>
 
   <!-- Back to Top Button -->
@@ -1659,6 +1660,8 @@ audio {
       const percent = (audio.currentTime / audio.duration) * 100;
       progressFill.style.width = percent + '%';
       nowPlayingFill.style.width = percent + '%';
+      updateTimeDisplay();
+
 
       const formatTime = t => isNaN(t) ? '0:00' : `${Math.floor(t / 60)}:${('0' + Math.floor(t % 60)).slice(-2)}`;
       trackTime.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
@@ -1734,6 +1737,32 @@ audio {
   }
 
   updateTrackCounter();
+function updateTimeDisplay() {
+  if (!currentTrack) return;
+  const formatTime = t => isNaN(t) ? '0:00' : `${Math.floor(t / 60)}:${('0' + Math.floor(t % 60)).slice(-2)}`;
+  document.getElementById('timeDisplay').textContent =
+    `${formatTime(currentTrack.currentTime)} / ${formatTime(currentTrack.duration)}`;
+}
+
+globalPlayButton.addEventListener('click', () => {
+  if (!currentTrack) return;
+  currentCard.querySelector('.play-button').click();
+});
+
+document.getElementById('prevTrackButton').addEventListener('click', () => {
+  if (!currentTrack) return;
+  const index = allTracks.findIndex(t => t.audio === currentTrack);
+  const prevIndex = (index - 1 + allTracks.length) % allTracks.length;
+  allTracks[prevIndex].card.querySelector('.play-button').click();
+});
+
+document.getElementById('nextTrackButton').addEventListener('click', () => {
+  if (!currentTrack) return;
+  const index = allTracks.findIndex(t => t.audio === currentTrack);
+  const nextIndex = (index + 1) % allTracks.length;
+  allTracks[nextIndex].card.querySelector('.play-button').click();
+});
+
 </script>
 
 
