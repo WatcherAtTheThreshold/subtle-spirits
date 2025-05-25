@@ -820,4 +820,196 @@
           <div class="player-controls">
             <button class="play-button" data-action="play">▶</button>
             <div class="track-info">
-              <div class="track-name">Tuesday
+              <div class="track-name">Tuesday Meh</div>
+              <div class="track-time">0:00 / 0:00</div>
+            </div>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
+            </div>
+          </div>
+          <div class="volume-container">
+            <span class="volume-icon">🔊</span>
+            <div class="volume-slider">
+              <div class="volume-fill"></div>
+            </div>
+            <span class="volume-text">70%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="scrollTop" title="Back to top">↑</button>
+
+  <footer>
+    &copy; 2025 Sketchy Ponderings — quietly relentless.
+  </footer>
+
+  <script>
+    // Audio player functionality
+    class AudioPlayer {
+      constructor(trackCard) {
+        this.trackCard = trackCard;
+        this.audio = trackCard.querySelector('audio');
+        this.playButton = trackCard.querySelector('.play-button');
+        this.progressBar = trackCard.querySelector('.progress-bar');
+        this.progressFill = trackCard.querySelector('.progress-fill');
+        this.volumeSlider = trackCard.querySelector('.volume-slider');
+        this.volumeFill = trackCard.querySelector('.volume-fill');
+        this.volumeText = trackCard.querySelector('.volume-text');
+        this.trackTime = trackCard.querySelector('.track-time');
+        
+        this.isPlaying = false;
+        this.currentVolume = 0.7;
+        
+        this.init();
+      }
+      
+      init() {
+        this.audio.volume = this.currentVolume;
+        
+        // Play/Pause button
+        this.playButton.addEventListener('click', () => {
+          this.togglePlay();
+        });
+        
+        // Progress bar
+        this.progressBar.addEventListener('click', (e) => {
+          const rect = this.progressBar.getBoundingClientRect();
+          const percent = (e.clientX - rect.left) / rect.width;
+          this.audio.currentTime = percent * this.audio.duration;
+        });
+        
+        // Volume control
+        this.volumeSlider.addEventListener('click', (e) => {
+          const rect = this.volumeSlider.getBoundingClientRect();
+          const percent = (e.clientX - rect.left) / rect.width;
+          this.setVolume(percent);
+        });
+        
+        // Audio events
+        this.audio.addEventListener('timeupdate', () => {
+          this.updateProgress();
+        });
+        
+        this.audio.addEventListener('loadedmetadata', () => {
+          this.updateTime();
+        });
+        
+        this.audio.addEventListener('ended', () => {
+          this.pause();
+        });
+        
+        // Initial volume display
+        this.updateVolumeDisplay();
+      }
+      
+      togglePlay() {
+        if (this.isPlaying) {
+          this.pause();
+        } else {
+          this.play();
+        }
+      }
+      
+      play() {
+        // Pause all other players
+        document.querySelectorAll('.track-card').forEach(card => {
+          if (card !== this.trackCard) {
+            const otherPlayer = card.audioPlayer;
+            if (otherPlayer && otherPlayer.isPlaying) {
+              otherPlayer.pause();
+            }
+          }
+        });
+        
+        this.audio.play();
+        this.isPlaying = true;
+        this.playButton.innerHTML = '⏸';
+        this.playButton.classList.add('playing');
+        this.trackCard.classList.add('playing');
+      }
+      
+      pause() {
+        this.audio.pause();
+        this.isPlaying = false;
+        this.playButton.innerHTML = '▶';
+        this.playButton.classList.remove('playing');
+        this.trackCard.classList.remove('playing');
+      }
+      
+      setVolume(percent) {
+        this.currentVolume = Math.max(0, Math.min(1, percent));
+        this.audio.volume = this.currentVolume;
+        this.updateVolumeDisplay();
+      }
+      
+      updateVolumeDisplay() {
+        this.volumeFill.style.width = (this.currentVolume * 100) + '%';
+        this.volumeText.textContent = Math.round(this.currentVolume * 100) + '%';
+      }
+      
+      updateProgress() {
+        if (this.audio.duration) {
+          const percent = (this.audio.currentTime / this.audio.duration) * 100;
+          this.progressFill.style.width = percent + '%';
+          this.updateTime();
+        }
+      }
+      
+      updateTime() {
+        const current = this.formatTime(this.audio.currentTime || 0);
+        const duration = this.formatTime(this.audio.duration || 0);
+        this.trackTime.textContent = `${current} / ${duration}`;
+      }
+      
+      formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+      }
+    }
+    
+    // Initialize all audio players
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.track-card').forEach(trackCard => {
+        trackCard.audioPlayer = new AudioPlayer(trackCard);
+      });
+    });
+    
+    // Back to top functionality
+    const topButton = document.getElementById('scrollTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        topButton.classList.add('show');
+      } else {
+        topButton.classList.remove('show');
+      }
+    });
+
+    topButton.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Parallax effect for mist
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const rate = scrolled * -0.3;
+      document.querySelector('.mist-overlay').style.transform = `translateY(${rate}px)`;
+    });
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        const playingCard = document.querySelector('.track-card.playing');
+        if (playingCard) {
+          playingCard.audioPlayer.togglePlay();
+        }
+      }
+    });
+  </script>
+</body>
+</html>
