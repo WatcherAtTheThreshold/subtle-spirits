@@ -1576,7 +1576,7 @@ audio {
   </footer>
 
   <!-- JS Placeholder — your script was likely cut off -->
- <script>
+<script>
   const trackCards = document.querySelectorAll('.track-card');
   const nowPlayingBar = document.getElementById('nowPlayingBar');
   const nowPlayingTitle = document.getElementById('nowPlayingTitle');
@@ -1589,6 +1589,7 @@ audio {
   let currentCard = null;
   let isContinuous = false;
   let isLooping = false;
+  let isShuffling = false;
   let allTracks = [];
 
   document.getElementById('continuousToggle').addEventListener('click', () => {
@@ -1604,20 +1605,22 @@ audio {
   });
 
   document.getElementById('shuffleButton').addEventListener('click', () => {
-    allTracks = Array.from(trackCards).sort(() => Math.random() - 0.5);
-    updateTrackCounter();
+    isShuffling = !isShuffling;
+    document.getElementById('shuffleButton').classList.toggle('active', isShuffling);
   });
 
   document.getElementById('repeatButton').addEventListener('click', () => {
-    isLooping = true;
+    isLooping = false;
     isContinuous = true;
-    document.getElementById('loopToggle').classList.add('active');
+    isShuffling = false;
+    document.getElementById('loopToggle').classList.remove('active');
     document.getElementById('continuousToggle').classList.add('active');
-    document.getElementById('loopSwitch').classList.add('active');
+    document.getElementById('loopSwitch').classList.remove('active');
     document.getElementById('toggleSwitch').classList.add('active');
+    document.getElementById('shuffleButton').classList.remove('active');
   });
 
-  trackCards.forEach((card, index) => {
+  trackCards.forEach((card) => {
     const audio = card.querySelector('audio');
     const playButton = card.querySelector('.play-button');
     const progressBar = card.querySelector('.progress-bar');
@@ -1629,7 +1632,6 @@ audio {
 
     allTracks.push({ card, audio });
 
-    // Click play/pause
     playButton.addEventListener('click', () => {
       if (audio === currentTrack && !audio.paused) {
         audio.pause();
@@ -1653,7 +1655,6 @@ audio {
       updateTrackCounter();
     });
 
-    // Progress tracking
     audio.addEventListener('timeupdate', () => {
       const percent = (audio.currentTime / audio.duration) * 100;
       progressFill.style.width = percent + '%';
@@ -1663,14 +1664,12 @@ audio {
       trackTime.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
     });
 
-    // Click to scrub
     progressBar.addEventListener('click', e => {
       const rect = progressBar.getBoundingClientRect();
       const percent = (e.clientX - rect.left) / rect.width;
       audio.currentTime = percent * audio.duration;
     });
 
-    // Volume control
     volumeSlider.addEventListener('click', e => {
       const rect = volumeSlider.getBoundingClientRect();
       const percent = (e.clientX - rect.left) / rect.width;
@@ -1679,7 +1678,6 @@ audio {
       volumeText.textContent = `${Math.round(percent * 100)}%`;
     });
 
-    // Autoplay next track
     audio.addEventListener('ended', () => {
       playButton.textContent = '▶';
       card.classList.remove('playing');
@@ -1691,20 +1689,27 @@ audio {
       }
 
       if (isContinuous) {
-        let nextIndex = (allTracks.findIndex(t => t.audio === audio) + 1) % allTracks.length;
+        let currentIndex = allTracks.findIndex(t => t.audio === audio);
+        let nextIndex;
+
+        if (isShuffling) {
+          do {
+            nextIndex = Math.floor(Math.random() * allTracks.length);
+          } while (nextIndex === currentIndex && allTracks.length > 1);
+        } else {
+          nextIndex = (currentIndex + 1) % allTracks.length;
+        }
+
         allTracks[nextIndex].card.querySelector('.play-button').click();
       }
     });
   });
 
-  // Global Play/Pause
   globalPlayButton.addEventListener('click', () => {
     if (!currentTrack) return;
-    const playBtn = currentCard.querySelector('.play-button');
-    playBtn.click();
+    currentCard.querySelector('.play-button').click();
   });
 
-  // Back to top
   window.addEventListener('scroll', () => {
     backToTop.classList.toggle('show', window.scrollY > 300);
   });
@@ -1728,9 +1733,9 @@ audio {
     trackCounter.textContent = `${index + 1} / ${allTracks.length}`;
   }
 
-  // Init
   updateTrackCounter();
 </script>
+
 
 
 </body>
