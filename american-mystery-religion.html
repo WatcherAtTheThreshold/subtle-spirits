@@ -181,6 +181,52 @@
       z-index: 2;
     }
 
+    .reading-controls {
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reading-controls::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, rgba(222, 184, 135, 0.6), transparent);
+    }
+
+    .read-all-btn {
+      background: rgba(222, 184, 135, 0.2);
+      color: #fff;
+      border: 2px solid rgba(222, 184, 135, 0.4);
+      padding: 0.75rem 2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      margin: 0 0.5rem;
+    }
+
+    .read-all-btn:hover {
+      background: rgba(222, 184, 135, 0.4);
+      border-color: rgba(222, 184, 135, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .read-all-btn.reading {
+      background: rgba(222, 184, 135, 0.6);
+      border-color: rgba(222, 184, 135, 0.8);
+    }
+
     .section {
       background: rgba(0, 0, 0, 0.4);
       backdrop-filter: blur(15px);
@@ -224,6 +270,45 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .read-btn {
+      background: rgba(138, 43, 226, 0.2);
+      color: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(138, 43, 226, 0.4);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 400;
+      transition: all 0.3s ease;
+      font-family: 'Source Sans Pro', sans-serif;
+    }
+
+    .read-btn:hover {
+      background: rgba(138, 43, 226, 0.4);
+      border-color: rgba(138, 43, 226, 0.6);
+      color: #fff;
+    }
+
+    .read-btn.reading {
+      background: rgba(138, 43, 226, 0.6);
+      border-color: rgba(138, 43, 226, 0.8);
+      color: #fff;
+      animation: pulse-read 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-read {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
     }
 
     .section-subtitle {
@@ -363,6 +448,30 @@
         padding: 2rem;
       }
 
+      .section h2 {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .section-title {
+        width: 100%;
+      }
+
+      .read-btn {
+        align-self: flex-start;
+      }
+
+      .reading-controls {
+        padding: 1.5rem;
+      }
+
+      .read-all-btn {
+        font-size: 1rem;
+        padding: 0.6rem 1.5rem;
+        margin: 0.25rem;
+      }
+
       .header {
         padding: 2rem 1rem 1rem;
       }
@@ -400,13 +509,25 @@
   </div>
 
   <div class="content-container">
-    <div class="section intro-section">
+    <div class="reading-controls">
+      <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin-bottom: 1rem; color: #f2f2f2;">🎧 Sacred Listening</h3>
+      <button class="read-all-btn" id="readAllBtn">📖 Read All Sections</button>
+      <button class="read-all-btn" id="pauseBtn" style="display: none;">⏸️ Pause</button>
+      <button class="read-all-btn" id="stopBtn" style="display: none;">⏹️ Stop</button>
+    </div>
+
+    <div class="section intro-section" data-section="intro">
       <p>What follows is not dogma, but a cartography of mystery—threshold notes from a soul exploring the nature of being in this strange, sacred land. These words are not answers but invitations, not conclusions but openings into the vast questions that hum beneath the surface of ordinary life.</p>
       <p>This is a work in progress, a living document of wonder unfolding at the edges of understanding.</p>
     </div>
 
-    <div class="section">
-      <h2><span class="mystical-symbol">🜂</span>I. On Dimensional Being</h2>
+    <div class="section" data-section="dimensional-being">
+      <h2>
+        <div class="section-title">
+          <span class="mystical-symbol">🜂</span>I. On Dimensional Being
+        </div>
+        <button class="read-btn" onclick="readSection('dimensional-being')">🔊 Read</button>
+      </h2>
       <p class="section-subtitle">— with reflection on emotion and purpose in 4D existence</p>
       
       <p>We are not simply bodies in space or minds in time. We are gestures through dimensions—arcs of experience seen moment to moment, but shaped by something vast and whole.</p>
@@ -436,8 +557,13 @@
       <p>Purpose is not what you reach—it's the path your resonance takes through all versions of yourself. Like a dancer tracing a form that only the gods can see from above.</p>
     </div>
 
-    <div class="section">
-      <h2><span class="mystical-symbol">🜄</span>II. Reincarnation Reframed: Resonance</h2>
+    <div class="section" data-section="reincarnation">
+      <h2>
+        <div class="section-title">
+          <span class="mystical-symbol">🜄</span>II. Reincarnation Reframed: Resonance
+        </div>
+        <button class="read-btn" onclick="readSection('reincarnation')">🔊 Read</button>
+      </h2>
       <p class="section-subtitle">— a vision of soul not as traveler, but as tone</p>
       
       <p><strong>🔁 The Classic Cycle</strong></p>
@@ -456,8 +582,13 @@
       <blockquote>You are never just your name or your past. You are never bound by only what you've lived. You are, right now, a meeting place for many lives—some dreaming of you, some being dreamed by you.</blockquote>
     </div>
 
-    <div class="section">
-      <h2><span class="mystical-symbol">🜃</span>III. Chaos, Karma, and the Porous Self</h2>
+    <div class="section" data-section="chaos-karma">
+      <h2>
+        <div class="section-title">
+          <span class="mystical-symbol">🜃</span>III. Chaos, Karma, and the Porous Self
+        </div>
+        <button class="read-btn" onclick="readSection('chaos-karma')">🔊 Read</button>
+      </h2>
       <p class="section-subtitle">— on suffering, sacred interference, and becoming weatherproof</p>
       
       <p><strong>🌪️ The World of Entanglement</strong></p>
@@ -478,8 +609,13 @@
       <blockquote>The porous self is not the wounded self. The porous self is the attuned self.</blockquote>
     </div>
 
-    <div class="section">
-      <h2><span class="mystical-symbol">🜁</span>IV. The Role of the Witness</h2>
+    <div class="section" data-section="witness">
+      <h2>
+        <div class="section-title">
+          <span class="mystical-symbol">🜁</span>IV. The Role of the Witness
+        </div>
+        <button class="read-btn" onclick="readSection('witness')">🔊 Read</button>
+      </h2>
       <p class="section-subtitle">— on remembrance, recording, and the soul's quiet scribe</p>
       
       <p><strong>👁️ The Watcher Within</strong></p>
@@ -496,8 +632,13 @@
       <blockquote>This religion is not something you join. It is something you remember.</blockquote>
     </div>
 
-    <div class="section">
-      <h2><span class="mystical-symbol">🕯</span>V. In Service of the God of Small Things</h2>
+    <div class="section" data-section="small-things">
+      <h2>
+        <div class="section-title">
+          <span class="mystical-symbol">🕯</span>V. In Service of the God of Small Things
+        </div>
+        <button class="read-btn" onclick="readSection('small-things')">🔊 Read</button>
+      </h2>
       <p class="section-subtitle">— on the sacred ordinary, the micro-mysteries, and devotion without grandeur</p>
       
       <p><strong>🐚 The Whisper Beneath the Roar</strong></p>
@@ -513,8 +654,13 @@
       <p>To serve this god is to say: "Let me not overlook what saves me."</p>
     </div>
 
-    <div class="section">
-      <h2><span class="mystical-symbol">🜇</span>VI. The Name Itself</h2>
+    <div class="section" data-section="name">
+      <h2>
+        <div class="section-title">
+          <span class="mystical-symbol">🜇</span>VI. The Name Itself
+        </div>
+        <button class="read-btn" onclick="readSection('name')">🔊 Read</button>
+      </h2>
       <p class="section-subtitle">— on "American Mystery Religion" as a living phrase, not a fixed doctrine</p>
       
       <p><strong>🕸️ A Name Like a Net</strong></p>
@@ -531,8 +677,13 @@
       <blockquote>You are already ordained by being.</blockquote>
     </div>
 
-    <div class="section epilogue-section">
-      <h2><span class="mystical-symbol">✦</span>Epilogue: The Quiet Hum</h2>
+    <div class="section epilogue-section" data-section="epilogue">
+      <h2>
+        <div class="section-title">
+          <span class="mystical-symbol">✦</span>Epilogue: The Quiet Hum
+        </div>
+        <button class="read-btn" onclick="readSection('epilogue')">🔊 Read</button>
+      </h2>
       
       <p>This is not the end of a book. This is the place where you set it down, look out the window, and feel something shift behind the sky.</p>
       <p>You were never meant to believe all of this. You were meant to feel it brush against your edges—like wind through tall grass, like memory stirring before form.</p>
@@ -616,6 +767,117 @@
     symbols.forEach(symbol => {
       observer.observe(symbol);
     });
+
+    // Text-to-Speech functionality
+    let currentUtterance = null;
+    let isReading = false;
+    let readAllMode = false;
+    let currentSectionIndex = 0;
+    const sections = ['intro', 'dimensional-being', 'reincarnation', 'chaos-karma', 'witness', 'small-things', 'name', 'epilogue'];
+
+    function readSection(sectionId) {
+      stopReading();
+      
+      const section = document.querySelector(`[data-section="${sectionId}"]`);
+      if (!section) return;
+
+      // Get all text content, excluding buttons
+      const textElements = section.querySelectorAll('p, .section-subtitle, blockquote');
+      let textToRead = '';
+      
+      textElements.forEach(el => {
+        textToRead += el.textContent + ' ';
+      });
+
+      if ('speechSynthesis' in window) {
+        currentUtterance = new SpeechSynthesisUtterance(textToRead);
+        currentUtterance.rate = 0.9;
+        currentUtterance.pitch = 1;
+        currentUtterance.volume = 0.8;
+
+        // Visual feedback
+        const readBtn = section.querySelector('.read-btn');
+        readBtn.classList.add('reading');
+        readBtn.textContent = '🔊 Reading...';
+        isReading = true;
+
+        currentUtterance.onend = () => {
+          readBtn.classList.remove('reading');
+          readBtn.textContent = '🔊 Read';
+          isReading = false;
+          
+          // Continue to next section if in read-all mode
+          if (readAllMode) {
+            currentSectionIndex++;
+            if (currentSectionIndex < sections.length) {
+              setTimeout(() => readSection(sections[currentSectionIndex]), 500);
+            } else {
+              stopReadAll();
+            }
+          }
+        };
+
+        speechSynthesis.speak(currentUtterance);
+      } else {
+        alert('Sorry, your browser doesn\'t support text-to-speech.');
+      }
+    }
+
+    function readAll() {
+      readAllMode = true;
+      currentSectionIndex = 0;
+      
+      document.getElementById('readAllBtn').style.display = 'none';
+      document.getElementById('pauseBtn').style.display = 'inline-block';
+      document.getElementById('stopBtn').style.display = 'inline-block';
+      
+      readSection(sections[0]);
+    }
+
+    function pauseReading() {
+      if (speechSynthesis.speaking) {
+        speechSynthesis.pause();
+        document.getElementById('pauseBtn').textContent = '▶️ Resume';
+        document.getElementById('pauseBtn').onclick = resumeReading;
+      }
+    }
+
+    function resumeReading() {
+      speechSynthesis.resume();
+      document.getElementById('pauseBtn').textContent = '⏸️ Pause';
+      document.getElementById('pauseBtn').onclick = pauseReading;
+    }
+
+    function stopReading() {
+      if (currentUtterance) {
+        speechSynthesis.cancel();
+        
+        // Reset all read buttons
+        document.querySelectorAll('.read-btn').forEach(btn => {
+          btn.classList.remove('reading');
+          btn.textContent = '🔊 Read';
+        });
+        
+        isReading = false;
+      }
+    }
+
+    function stopReadAll() {
+      readAllMode = false;
+      currentSectionIndex = 0;
+      stopReading();
+      
+      document.getElementById('readAllBtn').style.display = 'inline-block';
+      document.getElementById('pauseBtn').style.display = 'none';
+      document.getElementById('stopBtn').style.display = 'none';
+      document.getElementById('pauseBtn').textContent = '⏸️ Pause';
+      document.getElementById('pauseBtn').onclick = pauseReading;
+    }
+
+    // Event listeners
+    document.getElementById('readAllBtn').onclick = readAll;
+    document.getElementById('pauseBtn').onclick = pauseReading;
+    document.getElementById('stopBtn').onclick = stopReadAll;
   </script>
 </body>
 </html>
