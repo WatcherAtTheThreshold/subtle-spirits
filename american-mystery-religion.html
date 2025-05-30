@@ -32,12 +32,13 @@
 
     .mist-overlay {
       background: url('images/mist-overlay.png') repeat;
-      opacity: 0.6;
+      opacity: 0.8;
       position: fixed;
       width: 100%;
-      height: 250vh;
+      height: 400vh;
       z-index: -1;
       animation: mistScroll 120s linear infinite;
+      filter: blur(0.5px);
     }
 
     @keyframes mistScroll {
@@ -81,17 +82,22 @@
 
     @keyframes float {
       0% { 
-        transform: translateY(100vh) translateX(0) rotate(0deg); 
+        transform: translateY(100vh) translateX(0) rotate(0deg) scale(0.5); 
         opacity: 0; 
       }
-      10% { 
-        opacity: 1; 
+      5% { 
+        opacity: 1;
+        transform: translateY(95vh) translateX(10px) rotate(18deg) scale(0.8);
       }
-      90% { 
-        opacity: 1; 
+      50% {
+        transform: translateY(50vh) translateX(var(--drift, 50px)) rotate(180deg) scale(1);
+        opacity: 0.8;
+      }
+      95% { 
+        opacity: 0.6; 
       }
       100% { 
-        transform: translateY(-100px) translateX(100px) rotate(360deg); 
+        transform: translateY(-10vh) translateX(calc(var(--drift, 50px) * 2)) rotate(360deg) scale(0.3); 
         opacity: 0; 
       }
     }
@@ -190,7 +196,7 @@
     .section:hover {
       transform: translateY(-3px);
       border-color: rgba(255, 255, 255, 0.3);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 40px rgba(138, 43, 226, 0.1);
     }
 
     .section::before {
@@ -552,12 +558,12 @@
     const container = document.getElementById('particles');
     const colors = ['golden', 'purple', 'silver'];
     
-    for (let i = 0; i < 80; i++) {
+    for (let i = 0; i < 120; i++) {
       const particle = document.createElement('div');
       particle.className = `particle ${colors[Math.floor(Math.random() * colors.length)]}`;
       
-      // Random size between 2px and 8px
-      const size = Math.random() * 6 + 2;
+      // Random size between 1px and 10px
+      const size = Math.random() * 9 + 1;
       particle.style.width = `${size}px`;
       particle.style.height = `${size}px`;
       
@@ -565,13 +571,13 @@
       particle.style.left = Math.random() * 100 + '%';
       
       // Random animation delay
-      particle.style.animationDelay = Math.random() * 20 + 's';
+      particle.style.animationDelay = Math.random() * 25 + 's';
       
-      // Random animation duration
-      particle.style.animationDuration = (Math.random() * 15 + 15) + 's';
+      // Random animation duration between 12-30 seconds
+      particle.style.animationDuration = (Math.random() * 18 + 12) + 's';
       
       // Random horizontal drift
-      particle.style.setProperty('--drift', (Math.random() - 0.5) * 200 + 'px');
+      particle.style.setProperty('--drift', (Math.random() - 0.5) * 300 + 'px');
       
       container.appendChild(particle);
     }
