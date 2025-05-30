@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>American Mystery Religion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;700&family=Source+Sans+Pro:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0b0b0b;
+      color: #f4f4f4;
+      font-family: 'Source Sans Pro', sans-serif;
+      line-height: 1.8;
+      padding: 4rem 1.5rem;
+    }
+
+    .mist-layer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.3;
+      background-image: url('images/mist1.webp');
+      background-size: cover;
+      background-position: center;
+      animation: mistFloat 25s ease-in-out infinite;
+    }
+
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: rgba(222, 184, 135, 0.6);
+      border-radius: 50%;
+      animation: float 15s infinite linear;
+    }
+
+    @keyframes mistFloat {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(-10px, -5px); }
+      50% { transform: translate(8px, -10px); }
+      75% { transform: translate(-5px, 5px); }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+    }
+
+    h1, h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 500;
+      margin-top: 3rem;
+    }
+
+    h1 {
+      font-size: 3rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    blockquote {
+      font-style: italic;
+      color: #c7b89f;
+      border-left: 3px solid #deb887;
+      padding-left: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .section {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <div class="mist-layer"></div>
+  <div class="particles" id="particles"></div>
+  <div class="section">
+    <h1>American Mystery Religion</h1>
+
+    <h2>I. On Dimensional Being</h2>
+    <p>We are not simply bodies in space or minds in time. We are gestures through dimensions—arcs of experience seen moment to moment, but shaped by something vast and whole...</p>
+    <blockquote>Emotion is not a flaw of being—it is the color of being. It is how a 4D self feels itself folding through reality.</blockquote>
+
+    <h2>II. Reincarnation Reframed: Resonance</h2>
+    <p>Instead of a soul reborn over and over, we consider the soul as a field of resonance—where each life is not a step in a sequence, but a tone in a grand chord...</p>
+    <blockquote>You are never just your name or your past. You are never bound by only what you’ve lived. You are, right now, a meeting place for many lives—some dreaming of you, some being dreamed by you.</blockquote>
+
+    <h2>III. Chaos, Karma, and the Porous Self</h2>
+    <p>Chaos may be the sound of other souls’ karma brushing past us. Like wind through chimes, not every note is our own...</p>
+    <blockquote>The porous self is not the wounded self. The porous self is the attuned self.</blockquote>
+
+    <h2>IV. The Role of the Witness</h2>
+    <p>Beyond belief and ritual is the witness—the still part of us that sees, remembers, and gently writes. To witness is to leave trace without needing to explain...</p>
+    <blockquote>This religion is not something you join. It is something you remember.</blockquote>
+
+    <h2>V. The Name Itself</h2>
+    <p>“American Mystery Religion” is a phrase like a bell. Not a conclusion, but a vibration. It binds not by creed, but by resonance with those who feel the hum beneath the world...</p>
+    <blockquote>You are already ordained by being.</blockquote>
+
+    <h2>✦ Epilogue: The Quiet Hum</h2>
+    <p>This is not the end of a book. This is the place where you set it down, look out the window, and feel something shift behind the sky...</p>
+    <blockquote>That gentle hum. Still resonating. Still smiling.</blockquote>
+  </div>
+
+  <script>
+    // Floating particles
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 60; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.animationDelay = Math.random() * 15 + 's';
+      p.style.animationDuration = (Math.random() * 10 + 10) + 's';
+      container.appendChild(p);
+    }
+  </script>
+</body>
+</html>
