@@ -203,9 +203,9 @@
     }
 
     @keyframes pulse-oracle {
-      0%   { opacity: 0.4; transform: scale(1); }
-      50%  { opacity: 1; transform: scale(1.05); }
-      100% { opacity: 0.4; transform: scale(1); }
+      0%   { opacity: 0.3; transform: scale(1); }
+      50%  { opacity: 0.9; transform: scale(1.05); }
+      100% { opacity: 0.3; transform: scale(1); }
     }
 
     /* Hidden mystery religion link */
@@ -228,10 +228,10 @@
     }
 
     @keyframes pulse-mystery {
-      0%   { opacity: 0.25; transform: scale(1); }
-      33%  { opacity: 0.5; transform: scale(1.02); }
-      66%  { opacity: 0.25; transform: scale(1); }
-      100% { opacity: 0.25; transform: scale(1); }
+      0%   { opacity: 0.2; transform: scale(1); }
+      33%  { opacity: 0.4; transform: scale(1.02); }
+      66%  { opacity: 0.2; transform: scale(1); }
+      100% { opacity: 0.2; transform: scale(1); }
     }
 
     h1 {
@@ -354,8 +354,10 @@
       width: 100%;
       text-align: center;
       font-size: 0.9rem;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.3);
       font-family: 'Source Sans Pro', sans-serif;
+      z-index: 10;
+      backdrop-filter: none;
     }
 
     @media (max-width: 768px) {
@@ -370,6 +372,8 @@
       .nav {
         grid-template-columns: 1fr;
         gap: 0.8rem;
+        max-height: 60vh;
+        overflow-y: auto;
       }
 
       .nav-links {
@@ -442,6 +446,7 @@
     <div class="nav">
       <button class="mobile-menu-button" id="mobileMenuButton">☰ Menu</button>
       <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
         <a href="gallery.html">Gallery</a>
         <a href="games.html" class="creative">Games</a>
         <a href="music.html" class="creative">Music</a>
