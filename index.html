@@ -523,19 +523,19 @@
     document.getElementById('oracleGlyph').addEventListener('click', (e) => {
       e.preventDefault();
       triggerSigilAnimation('sigil-oracle');
-      // Slight delay before navigation to show the sigil
+      // 3 second delay before navigation to show the sigil unfold
       setTimeout(() => {
         window.location.href = 'sigil-oracle.html';
-      }, 1000);
+      }, 3000);
     });
 
     document.getElementById('mysteryGlyph').addEventListener('click', (e) => {
       e.preventDefault();
       triggerSigilAnimation('sigil-mystery');
-      // Slight delay before navigation to show the sigil
+      // 3 second delay before navigation to show the sigil unfold
       setTimeout(() => {
         window.location.href = 'american-mystery-religion.html';
-      }, 1000);
+      }, 3000);
     });
 
     // Mobile menu functionality
