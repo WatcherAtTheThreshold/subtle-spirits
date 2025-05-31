@@ -12,11 +12,11 @@
       padding: 0;
     }
 
-    body, html {
+    body {
       min-height: 100vh;
       font-family: 'Source Sans Pro', sans-serif;
-      color: #fff;
-      background: #0a0a0a;
+      background-color: #0a0a0a;
+      color: #f0f0f0;
       overflow-x: hidden;
       position: relative;
     }
@@ -103,14 +103,6 @@
       }
     }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem;
-      position: relative;
-      z-index: 1;
-    }
-
     .header {
       text-align: center;
       padding: 3rem 2rem 2rem;
@@ -119,6 +111,28 @@
       margin-bottom: 2rem;
       position: relative;
       z-index: 1;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 500;
+      color: #f2f2f2;
+      text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 40px rgba(138, 43, 226, 0.2);
+      margin-bottom: 0.5rem;
+      animation: titleGlow 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes titleGlow {
+      0% { text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 40px rgba(138, 43, 226, 0.2); }
+      100% { text-shadow: 0 0 25px rgba(0, 0, 0, 0.8), 0 0 50px rgba(138, 43, 226, 0.4); }
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 300;
+      font-style: italic;
     }
 
     .mobile-menu-button {
@@ -146,8 +160,9 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
       gap: 1rem;
-      max-width: 600px;
-      margin: 0 auto 3rem;
+      width: 100%;
+      max-width: 700px;
+      margin: 2rem auto;
       padding: 0 2rem;
       position: relative;
       z-index: 1;
@@ -241,48 +256,15 @@
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
     }
 
-    .nav-back {
-      position: absolute;
-      top: 2rem;
-      left: 2rem;
-      color: rgba(255, 255, 255, 0.7);
-      text-decoration: none;
-      font-size: 1.5rem;
-      transition: all 0.3s ease;
-    }
-
-    .nav-back:hover {
-      color: #fff;
-      transform: scale(1.1);
-    }
-
-    h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 3.5rem;
-      font-weight: 500;
-      color: #f2f2f2;
-      text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 40px rgba(138, 43, 226, 0.2);
-      margin-bottom: 0.5rem;
-      animation: titleGlow 4s ease-in-out infinite alternate;
-    }
-
-    @keyframes titleGlow {
-      0% { text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 40px rgba(138, 43, 226, 0.2); }
-      100% { text-shadow: 0 0 25px rgba(0, 0, 0, 0.8), 0 0 50px rgba(138, 43, 226, 0.4); }
-    }
-
-    .subtitle {
-      font-size: 1.2rem;
-      color: rgba(255, 255, 255, 0.8);
-      font-weight: 300;
-      font-style: italic;
-    }
-
     .games-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
       gap: 2rem;
-      margin-bottom: 3rem;
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
     }
 
     .game-card {
@@ -290,7 +272,7 @@
       backdrop-filter: blur(15px);
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 15px;
-      padding: 2.5rem 2rem;
+      padding: 2rem;
       transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
       position: relative;
       overflow: hidden;
@@ -533,22 +515,6 @@
       padding-left: 3rem;
     }
 
-    .footer-note {
-      text-align: center;
-      color: rgba(255, 255, 255, 0.6);
-      font-style: italic;
-      margin-top: 3rem;
-      padding: 2rem;
-      backdrop-filter: blur(5px);
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 15px;
-      position: relative;
-      z-index: 1;
-      max-width: 1000px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
     .back-to-top {
       position: fixed;
       bottom: 30px;
@@ -594,14 +560,10 @@
     }
 
     @media (max-width: 768px) {
-      .container {
-        padding: 1rem;
-      }
-      
       h1 {
         font-size: 2.5rem;
       }
-
+      
       .mobile-menu-button {
         display: block;
       }
@@ -611,7 +573,7 @@
         gap: 0.8rem;
         max-height: 60vh;
         overflow-y: auto;
-        max-width: 600px;
+        max-width: 400px;
       }
 
       .nav-links {
@@ -640,14 +602,15 @@
         padding: 0.8rem 1rem;
         font-size: 0.9rem;
       }
-      
+
       .games-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
+        padding: 1rem;
       }
-      
+
       .game-card {
-        padding: 2rem 1.5rem;
+        padding: 1.5rem;
       }
 
       .header {
@@ -657,7 +620,7 @@
 
     @media (max-width: 480px) {
       .nav {
-        padding: 0 1rem;
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -687,90 +650,84 @@
   </div>
 
   <div class="games-grid">
-      <!-- Cruxfade -->
-      <div class="game-card">
-        <h2 class="game-title">Cruxfade</h2>
-        <span class="game-status status-active">Active Development</span>
-        
-        <p class="game-description">
-          A tactical roguelike card battler where mystical companions face otherworldly threats. 
-          Features deep strategic combat with unique character abilities and an evolving storyline 
-          of friendship, betrayal, and ancient powers.
-        </p>
-        
-        <div class="game-tags">
-          <span class="tag">Roguelike</span>
-          <span class="tag">Card Battle</span>
-          <span class="tag">HTML5</span>
-          <span class="tag">Strategy</span>
-        </div>
-        
-        <div class="game-links">
-          <a href="https://watcheratthethreshold.github.io/subtle-sprits-cruxfade/" class="game-link primary">Play Now</a>
-        </div>
-        
-        <div class="development-note">
-          Currently implementing item systems and expanding the roguelike progression mechanics.
-        </div>
+    <!-- Cruxfade -->
+    <div class="game-card">
+      <h2 class="game-title">Cruxfade</h2>
+      <span class="game-status status-active">Active Development</span>
+      
+      <p class="game-description">
+        A tactical roguelike card battler where mystical companions face otherworldly threats. 
+        Features deep strategic combat with unique character abilities and an evolving storyline 
+        of friendship, betrayal, and ancient powers.
+      </p>
+      
+      <div class="game-tags">
+        <span class="tag">Roguelike</span>
+        <span class="tag">Card Battle</span>
+        <span class="tag">HTML5</span>
+        <span class="tag">Strategy</span>
       </div>
-
-      <!-- Nimble Cards -->
-      <div class="game-card">
-        <h2 class="game-title">Nimble Cards</h2>
-        <span class="game-status status-stopped">Stopped Development</span>
-        
-        <p class="game-description">
-          The predecessor to Cruxfade. I stopped development when it got too complex to build in GDevelop.
-        </p>
-        
-        <div class="game-stats">
-          <span class="stat"><strong>75%</strong> positive reactions</span>
-          <span class="stat"><strong>169</strong> plays</span>
-        </div>
-        
-        <div class="game-tags">
-          <span class="tag">Card Game</span>
-          <span class="tag">GDevelop</span>
-          <span class="tag">Arcade</span>
-          <span class="tag">Quick Play</span>
-        </div>
-        
-        <div class="game-links">
-          <a href="https://gd.games/jessop/nimble-cards" class="game-link primary">Play on GD.games</a>
-        </div>
+      
+      <div class="game-links">
+        <a href="https://watcheratthethreshold.github.io/subtle-sprits-cruxfade/" class="game-link primary">Play Now</a>
       </div>
-
-      <!-- Subtle Spirits -->
-      <div class="game-card">
-        <h2 class="game-title">Subtle Spirits</h2>
-        <span class="game-status status-development">In Development</span>
-        
-        <p class="game-description">
-          A tale of friendship and betrayal set in a beautiful landscape of humanity's and earth's future. 
-          This narrative adventure explores deep themes through carefully crafted scenes and character development. 
-          <em>This is a prelude to a larger story.</em>
-        </p>
-        
-        <div class="game-tags">
-          <span class="tag">Adventure</span>
-          <span class="tag">Narrative</span>
-          <span class="tag">GDevelop</span>
-          <span class="tag">Story-Rich</span>
-        </div>
-        
-        <div class="game-links">
-          <a href="https://jessopsbezar.itch.io/subtle-spirits" class="game-link">View on Itch.io</a>
-        </div>
-        
-        <div class="development-note">
-          Currently missing key scenes and animations. Audio implementation and sprite polishing in progress.
-        </div>
+      
+      <div class="development-note">
+        Currently implementing item systems and expanding the roguelike progression mechanics.
       </div>
     </div>
 
-    <div class="footer-note">
-      Each game explores different facets of interactive storytelling—from tactical depth to narrative immersion. 
-      More worlds are taking shape at the threshold of imagination.
+    <!-- Nimble Cards -->
+    <div class="game-card">
+      <h2 class="game-title">Nimble Cards</h2>
+      <span class="game-status status-stopped">Stopped Development</span>
+      
+      <p class="game-description">
+        The predecessor to Cruxfade. I stopped development when it got too complex to build in GDevelop.
+      </p>
+      
+      <div class="game-stats">
+        <span class="stat"><strong>75%</strong> positive reactions</span>
+        <span class="stat"><strong>169</strong> plays</span>
+      </div>
+      
+      <div class="game-tags">
+        <span class="tag">Card Game</span>
+        <span class="tag">GDevelop</span>
+        <span class="tag">Arcade</span>
+        <span class="tag">Quick Play</span>
+      </div>
+      
+      <div class="game-links">
+        <a href="https://gd.games/jessop/nimble-cards" class="game-link primary">Play on GD.games</a>
+      </div>
+    </div>
+
+    <!-- Subtle Spirits -->
+    <div class="game-card">
+      <h2 class="game-title">Subtle Spirits</h2>
+      <span class="game-status status-development">In Development</span>
+      
+      <p class="game-description">
+        A tale of friendship and betrayal set in a beautiful landscape of humanity's and earth's future. 
+        This narrative adventure explores deep themes through carefully crafted scenes and character development. 
+        <em>This is a prelude to a larger story.</em>
+      </p>
+      
+      <div class="game-tags">
+        <span class="tag">Adventure</span>
+        <span class="tag">Narrative</span>
+        <span class="tag">GDevelop</span>
+        <span class="tag">Story-Rich</span>
+      </div>
+      
+      <div class="game-links">
+        <a href="https://jessopsbezar.itch.io/subtle-spirits" class="game-link">View on Itch.io</a>
+      </div>
+      
+      <div class="development-note">
+        Currently missing key scenes and animations. Audio implementation and sprite polishing in progress.
+      </div>
     </div>
   </div>
 
@@ -813,7 +770,7 @@
     let ticking = false;
     function updateParallax() {
       const scrolled = window.pageYOffset;
-      const rate = scrolled * -0.5;
+      const rate = scrolled * -0.3;
       document.querySelector('.mist-overlay').style.transform = `translateY(${rate}px)`;
       ticking = false;
     }
