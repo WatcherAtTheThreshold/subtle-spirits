@@ -242,34 +242,44 @@
     }
 
     .sigil-overlay.animate {
-      animation: sigilEmanation 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      animation: sigilEmanation 6s cubic-bezier(0.25, 0.1, 0.25, 1);
     }
 
     @keyframes sigilEmanation {
       0% {
         transform: translate(-50%, -50%) scale(0) rotate(0deg);
         opacity: 0;
-        filter: blur(10px);
+        filter: blur(15px);
       }
-      15% {
-        opacity: 0.7;
-        filter: blur(5px);
-        transform: translate(-50%, -50%) scale(0.3) rotate(15deg);
+      10% {
+        opacity: 0.3;
+        filter: blur(8px);
+        transform: translate(-48%, -52%) scale(0.2) rotate(5deg);
+      }
+      25% {
+        opacity: 0.8;
+        filter: blur(3px);
+        transform: translate(-52%, -48%) scale(0.8) rotate(30deg);
       }
       50% {
-        transform: translate(-50%, -50%) scale(1.2) rotate(90deg);
-        opacity: 0.9;
+        transform: translate(-50%, -50%) scale(1.5) rotate(180deg);
+        opacity: 1;
         filter: blur(0px);
       }
-      85% {
-        opacity: 0.6;
+      75% {
+        opacity: 0.7;
         filter: blur(2px);
-        transform: translate(-50%, -50%) scale(1.6) rotate(270deg);
+        transform: translate(-48%, -52%) scale(3) rotate(270deg);
+      }
+      90% {
+        opacity: 0.3;
+        filter: blur(6px);
+        transform: translate(-52%, -48%) scale(5) rotate(340deg);
       }
       100% {
-        transform: translate(-50%, -50%) scale(2) rotate(360deg);
+        transform: translate(-50%, -50%) scale(8) rotate(360deg);
         opacity: 0;
-        filter: blur(8px);
+        filter: blur(20px);
       }
     }
 
@@ -998,7 +1008,7 @@
       // Remove animation class after completion to allow re-triggering
       setTimeout(() => {
         sigil.classList.remove('animate');
-      }, 3000);
+      }, 6000);
     }
 
     function stopReading() {
