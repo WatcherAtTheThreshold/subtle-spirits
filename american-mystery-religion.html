@@ -418,6 +418,12 @@
         align-self: flex-start;
       }
 
+      .intro-section > div {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 1rem;
+      }
+
       .header {
         padding: 2rem 1rem 1rem;
       }
@@ -456,6 +462,10 @@
 
   <div class="content-container">
     <div class="section intro-section" data-section="intro">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap;">
+        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: #f2f2f2; margin: 0;">Introduction</h3>
+        <button class="read-btn" onclick="readSection('intro')">🔊 Read</button>
+      </div>
       <p>What follows is not dogma, but a cartography of mystery—threshold notes from a soul exploring the nature of being in this strange, sacred land. These words are not answers but invitations, not conclusions but openings into the vast questions that hum beneath the surface of ordinary life.</p>
       <p>This is a work in progress, a living document of wonder unfolding at the edges of understanding.</p>
     </div>
@@ -710,8 +720,16 @@
     // Text-to-Speech functionality
     let currentUtterance = null;
     let isReading = false;
+    let currentSectionId = null;
 
     function readSection(sectionId) {
+      // If this section is already being read, stop it
+      if (isReading && currentSectionId === sectionId) {
+        stopReading();
+        return;
+      }
+      
+      // Stop any other reading first
       stopReading();
       
       const section = document.querySelector(`[data-section="${sectionId}"]`);
@@ -734,13 +752,15 @@
         // Visual feedback
         const readBtn = section.querySelector('.read-btn');
         readBtn.classList.add('reading');
-        readBtn.textContent = '🔊 Reading...';
+        readBtn.textContent = '⏹️ Stop';
         isReading = true;
+        currentSectionId = sectionId;
 
         currentUtterance.onend = () => {
           readBtn.classList.remove('reading');
           readBtn.textContent = '🔊 Read';
           isReading = false;
+          currentSectionId = null;
         };
 
         speechSynthesis.speak(currentUtterance);
@@ -760,6 +780,7 @@
         });
         
         isReading = false;
+        currentSectionId = null;
       }
     }
   </script>
