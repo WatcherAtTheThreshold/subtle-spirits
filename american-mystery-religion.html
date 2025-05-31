@@ -252,32 +252,37 @@
         filter: blur(15px);
       }
       10% {
-        opacity: 0.3;
+        opacity: 0.1;
         filter: blur(8px);
         transform: translate(-48%, -52%) scale(0.2) rotate(5deg);
       }
       25% {
-        opacity: 0.8;
+        opacity: 0.3;
         filter: blur(3px);
         transform: translate(-52%, -48%) scale(0.8) rotate(30deg);
       }
       50% {
         transform: translate(-50%, -50%) scale(1.5) rotate(180deg);
+        opacity: 0.6;
+        filter: blur(1px);
+      }
+      65% {
+        transform: translate(-48%, -52%) scale(2.5) rotate(220deg);
         opacity: 1;
         filter: blur(0px);
       }
-      75% {
-        opacity: 0.7;
+      80% {
+        opacity: 0.8;
         filter: blur(2px);
-        transform: translate(-48%, -52%) scale(3) rotate(270deg);
+        transform: translate(-52%, -48%) scale(4) rotate(290deg);
       }
       90% {
-        opacity: 0.3;
+        opacity: 0.4;
         filter: blur(6px);
-        transform: translate(-52%, -48%) scale(5) rotate(340deg);
+        transform: translate(-50%, -50%) scale(6) rotate(340deg);
       }
       100% {
-        transform: translate(-50%, -50%) scale(8) rotate(360deg);
+        transform: translate(-48%, -52%) scale(8) rotate(360deg);
         opacity: 0;
         filter: blur(20px);
       }
@@ -911,6 +916,8 @@
     let isReading = false;
     let isPaused = false;
     let currentSectionId = null;
+    let currentText = '';
+    let currentCharIndex = 0;
 
     function readSection(sectionId) {
       const section = document.querySelector(`[data-section="${sectionId}"]`);
@@ -919,17 +926,11 @@
       // If this section is currently reading
       if (isReading && currentSectionId === sectionId) {
         if (isPaused) {
-          // Resume
-          speechSynthesis.resume();
-          isPaused = false;
-          const readBtn = section.querySelector('.read-btn');
-          readBtn.textContent = '⏸️ Pause';
+          // Resume from where we left off
+          resumeReading(sectionId);
         } else {
           // Pause
-          speechSynthesis.pause();
-          isPaused = true;
-          const readBtn = section.querySelector('.read-btn');
-          readBtn.textContent = '▶️ Resume';
+          pauseReading(sectionId);
         }
         return;
       }
@@ -964,19 +965,36 @@
         .replace(/\s+/g, ' ') // Replace multiple spaces with single space
         .trim();
 
+      currentText = textToRead;
+      currentCharIndex = 0;
+      startReading(sectionId);
+    }
+
+    function startReading(sectionId) {
       if ('speechSynthesis' in window) {
-        currentUtterance = new SpeechSynthesisUtterance(textToRead);
+        const textToSpeak = currentText.substring(currentCharIndex);
+        currentUtterance = new SpeechSynthesisUtterance(textToSpeak);
         currentUtterance.rate = 0.9;
         currentUtterance.pitch = 1;
         currentUtterance.volume = 0.8;
 
-        // Visual feedback
+        const section = document.querySelector(`[data-section="${sectionId}"]`);
         const readBtn = section.querySelector('.read-btn');
+        
+        // Visual feedback
         readBtn.classList.add('reading');
         readBtn.textContent = '⏸️ Pause';
         isReading = true;
         isPaused = false;
         currentSectionId = sectionId;
+
+        // Track progress for proper pausing
+        let startCharIndex = currentCharIndex;
+        currentUtterance.onboundary = (event) => {
+          if (event.name === 'word') {
+            currentCharIndex = startCharIndex + event.charIndex;
+          }
+        };
 
         currentUtterance.onend = () => {
           readBtn.classList.remove('reading');
@@ -984,12 +1002,29 @@
           isReading = false;
           isPaused = false;
           currentSectionId = null;
+          currentCharIndex = 0;
         };
 
         speechSynthesis.speak(currentUtterance);
       } else {
         alert('Sorry, your browser doesn\'t support text-to-speech.');
       }
+    }
+
+    function pauseReading(sectionId) {
+      if (currentUtterance) {
+        speechSynthesis.cancel();
+        isPaused = true;
+        
+        const section = document.querySelector(`[data-section="${sectionId}"]`);
+        const readBtn = section.querySelector('.read-btn');
+        readBtn.textContent = '▶️ Resume';
+      }
+    }
+
+    function resumeReading(sectionId) {
+      isPaused = false;
+      startReading(sectionId);
     }
 
     function triggerSigilAnimation(sectionId) {
@@ -1024,6 +1059,8 @@
         isReading = false;
         isPaused = false;
         currentSectionId = null;
+        currentCharIndex = 0;
+        currentText = '';
       }
     }
   </script>
