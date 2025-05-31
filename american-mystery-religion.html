@@ -219,6 +219,60 @@
       transition: all 0.3s ease;
     }
 
+    .sigil-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 150px;
+      height: 150px;
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 5;
+      filter: blur(10px);
+      transition: none;
+    }
+
+    .sigil-overlay img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 20px rgba(138, 43, 226, 0.6)) 
+              drop-shadow(0 0 40px rgba(138, 43, 226, 0.3));
+    }
+
+    .sigil-overlay.animate {
+      animation: sigilEmanation 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    @keyframes sigilEmanation {
+      0% {
+        transform: translate(-50%, -50%) scale(0) rotate(0deg);
+        opacity: 0;
+        filter: blur(10px);
+      }
+      15% {
+        opacity: 0.7;
+        filter: blur(5px);
+        transform: translate(-50%, -50%) scale(0.3) rotate(15deg);
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.2) rotate(90deg);
+        opacity: 0.9;
+        filter: blur(0px);
+      }
+      85% {
+        opacity: 0.6;
+        filter: blur(2px);
+        transform: translate(-50%, -50%) scale(1.6) rotate(270deg);
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(2) rotate(360deg);
+        opacity: 0;
+        filter: blur(8px);
+      }
+    }
+
     .section:hover {
       transform: translateY(-3px);
       border-color: rgba(255, 255, 255, 0.3);
@@ -520,6 +574,9 @@
 
   <div class="content-container">
     <div class="section intro-section" data-section="intro">
+      <div class="sigil-overlay" id="sigil-intro">
+        <img src="sigils/sigil-1.png" alt="Mystical Sigil">
+      </div>
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap;">
         <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: #f2f2f2; margin: 0;">Introduction</h3>
         <button class="read-btn" onclick="readSection('intro')">🔊 Read</button>
@@ -529,6 +586,9 @@
     </div>
 
     <div class="section" data-section="dimensional-being">
+      <div class="sigil-overlay" id="sigil-dimensional-being">
+        <img src="sigils/sigil-2.png" alt="Mystical Sigil">
+      </div>
       <h2>
         <div class="section-title">
           <span class="mystical-symbol">🜂</span>I. On Dimensional Being
@@ -565,6 +625,9 @@
     </div>
 
     <div class="section" data-section="reincarnation">
+      <div class="sigil-overlay" id="sigil-reincarnation">
+        <img src="sigils/sigil-3.png" alt="Mystical Sigil">
+      </div>
       <h2>
         <div class="section-title">
           <span class="mystical-symbol">🜄</span>II. Reincarnation Reframed: Resonance
@@ -590,6 +653,9 @@
     </div>
 
     <div class="section" data-section="chaos-karma">
+      <div class="sigil-overlay" id="sigil-chaos-karma">
+        <img src="sigils/sigil-4.png" alt="Mystical Sigil">
+      </div>
       <h2>
         <div class="section-title">
           <span class="mystical-symbol">🜃</span>III. Chaos, Karma, and the Porous Self
@@ -617,6 +683,9 @@
     </div>
 
     <div class="section" data-section="witness">
+      <div class="sigil-overlay" id="sigil-witness">
+        <img src="sigils/sigil-5.png" alt="Mystical Sigil">
+      </div>
       <h2>
         <div class="section-title">
           <span class="mystical-symbol">🜁</span>IV. The Role of the Witness
@@ -640,6 +709,9 @@
     </div>
 
     <div class="section" data-section="small-things">
+      <div class="sigil-overlay" id="sigil-small-things">
+        <img src="sigils/sigil-6.png" alt="Mystical Sigil">
+      </div>
       <h2>
         <div class="section-title">
           <span class="mystical-symbol">🕯</span>V. In Service of the God of Small Things
@@ -662,6 +734,9 @@
     </div>
 
     <div class="section" data-section="name">
+      <div class="sigil-overlay" id="sigil-name">
+        <img src="sigils/sigil-7.png" alt="Mystical Sigil">
+      </div>
       <h2>
         <div class="section-title">
           <span class="mystical-symbol">🜇</span>VI. The Name Itself
@@ -685,6 +760,9 @@
     </div>
 
     <div class="section epilogue-section" data-section="epilogue">
+      <div class="sigil-overlay" id="sigil-epilogue">
+        <img src="sigils/sigil-8.png" alt="Mystical Sigil">
+      </div>
       <h2>
         <div class="section-title">
           <span class="mystical-symbol">✦</span>Epilogue: The Quiet Hum
@@ -739,6 +817,18 @@
       
       container.appendChild(particle);
     }
+
+    // Randomize sigils on page load
+    function randomizeSigils() {
+      const sigils = document.querySelectorAll('.sigil-overlay img');
+      sigils.forEach(sigil => {
+        const randomSigil = Math.floor(Math.random() * 9) + 1;
+        sigil.src = `sigils/sigil-${randomSigil}.png`;
+      });
+    }
+
+    // Initialize random sigils
+    randomizeSigils();
 
     // Back to top functionality
     const topButton = document.getElementById('scrollTop');
@@ -837,6 +927,9 @@
       // Stop any other reading first
       stopReading();
       
+      // Trigger sigil animation
+      triggerSigilAnimation(sectionId);
+      
       // Get section title
       let sectionTitle = '';
       const titleElement = section.querySelector('h2 .section-title, h3');
@@ -887,6 +980,25 @@
       } else {
         alert('Sorry, your browser doesn\'t support text-to-speech.');
       }
+    }
+
+    function triggerSigilAnimation(sectionId) {
+      const sigil = document.getElementById(`sigil-${sectionId}`);
+      if (!sigil) return;
+      
+      // Reset any existing animation
+      sigil.classList.remove('animate');
+      
+      // Force reflow to ensure the class removal takes effect
+      void sigil.offsetWidth;
+      
+      // Add animation class
+      sigil.classList.add('animate');
+      
+      // Remove animation class after completion to allow re-triggering
+      setTimeout(() => {
+        sigil.classList.remove('animate');
+      }, 3000);
     }
 
     function stopReading() {
