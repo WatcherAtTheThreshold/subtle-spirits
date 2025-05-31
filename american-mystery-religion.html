@@ -918,6 +918,7 @@
     let currentSectionId = null;
     let currentText = '';
     let currentCharIndex = 0;
+    let fadeInterval = null;
 
     function readSection(sectionId) {
       const section = document.querySelector(`[data-section="${sectionId}"]`);
@@ -976,7 +977,7 @@
         currentUtterance = new SpeechSynthesisUtterance(textToSpeak);
         currentUtterance.rate = 0.9;
         currentUtterance.pitch = 1;
-        currentUtterance.volume = 0.8;
+        currentUtterance.volume = 0.1; // Start very quiet
 
         const section = document.querySelector(`[data-section="${sectionId}"]`);
         const readBtn = section.querySelector('.read-btn');
@@ -997,6 +998,7 @@
         };
 
         currentUtterance.onend = () => {
+          clearFadeInterval();
           readBtn.classList.remove('reading');
           readBtn.textContent = '🔊 Read';
           isReading = false;
@@ -1006,13 +1008,45 @@
         };
 
         speechSynthesis.speak(currentUtterance);
+        
+        // Start gentle fade-in effect
+        startFadeIn();
       } else {
         alert('Sorry, your browser doesn\'t support text-to-speech.');
       }
     }
 
+    function startFadeIn() {
+      let currentVolume = 0.1;
+      const targetVolume = 0.8;
+      const fadeSteps = 15;
+      const volumeIncrement = (targetVolume - currentVolume) / fadeSteps;
+      const fadeStepDuration = 100; // 100ms between steps = 1.5 second total fade
+
+      fadeInterval = setInterval(() => {
+        if (currentUtterance && !isPaused) {
+          currentVolume += volumeIncrement;
+          if (currentVolume >= targetVolume) {
+            currentVolume = targetVolume;
+            clearFadeInterval();
+          }
+          currentUtterance.volume = currentVolume;
+        } else {
+          clearFadeInterval();
+        }
+      }, fadeStepDuration);
+    }
+
+    function clearFadeInterval() {
+      if (fadeInterval) {
+        clearInterval(fadeInterval);
+        fadeInterval = null;
+      }
+    }
+
     function pauseReading(sectionId) {
       if (currentUtterance) {
+        clearFadeInterval();
         speechSynthesis.cancel();
         isPaused = true;
         
@@ -1048,6 +1082,7 @@
 
     function stopReading() {
       if (currentUtterance) {
+        clearFadeInterval();
         speechSynthesis.cancel();
         
         // Reset all read buttons
