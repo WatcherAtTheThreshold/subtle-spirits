@@ -720,28 +720,57 @@
     // Text-to-Speech functionality
     let currentUtterance = null;
     let isReading = false;
+    let isPaused = false;
     let currentSectionId = null;
 
     function readSection(sectionId) {
-      // If this section is already being read, stop it
+      const section = document.querySelector(`[data-section="${sectionId}"]`);
+      if (!section) return;
+      
+      // If this section is currently reading
       if (isReading && currentSectionId === sectionId) {
-        stopReading();
+        if (isPaused) {
+          // Resume
+          speechSynthesis.resume();
+          isPaused = false;
+          const readBtn = section.querySelector('.read-btn');
+          readBtn.textContent = '⏸️ Pause';
+        } else {
+          // Pause
+          speechSynthesis.pause();
+          isPaused = true;
+          const readBtn = section.querySelector('.read-btn');
+          readBtn.textContent = '▶️ Resume';
+        }
         return;
       }
       
       // Stop any other reading first
       stopReading();
       
-      const section = document.querySelector(`[data-section="${sectionId}"]`);
-      if (!section) return;
+      // Get section title
+      let sectionTitle = '';
+      const titleElement = section.querySelector('h2 .section-title, h3');
+      if (titleElement) {
+        sectionTitle = titleElement.textContent.trim() + '. ';
+      }
 
       // Get all text content, excluding buttons
       const textElements = section.querySelectorAll('p, .section-subtitle, blockquote');
-      let textToRead = '';
+      let textToRead = sectionTitle;
       
       textElements.forEach(el => {
         textToRead += el.textContent + ' ';
       });
+
+      // Clean up text for better speech
+      textToRead = textToRead
+        .replace(/—/g, ', ') // Replace em dashes with commas
+        .replace(/–/g, ' to ') // Replace en dashes with "to"
+        .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '') // Remove emojis
+        .replace(/[🜂🜄🜃🜁🕯🜇✦📐💠🧭🧿🔁🎼🗝️🌀🌪️💥⚡🔄🕊️👁️📜📖🕯️🐚🌱🔍🫖🕸️🌾✨☽]/g, '') // Remove mystical symbols
+        .replace(/\s+/g, ' ') // Replace multiple spaces with single space
+        .trim();
 
       if ('speechSynthesis' in window) {
         currentUtterance = new SpeechSynthesisUtterance(textToRead);
@@ -752,14 +781,16 @@
         // Visual feedback
         const readBtn = section.querySelector('.read-btn');
         readBtn.classList.add('reading');
-        readBtn.textContent = '⏹️ Stop';
+        readBtn.textContent = '⏸️ Pause';
         isReading = true;
+        isPaused = false;
         currentSectionId = sectionId;
 
         currentUtterance.onend = () => {
           readBtn.classList.remove('reading');
           readBtn.textContent = '🔊 Read';
           isReading = false;
+          isPaused = false;
           currentSectionId = null;
         };
 
@@ -780,6 +811,7 @@
         });
         
         isReading = false;
+        isPaused = false;
         currentSectionId = null;
       }
     }
