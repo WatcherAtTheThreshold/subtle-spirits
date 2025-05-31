@@ -139,6 +139,30 @@
       z-index: 2;
     }
 
+    .mobile-menu-button {
+      display: none;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 1rem;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 0 auto 1rem;
+      width: fit-content;
+    }
+
+    .mobile-menu-button:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .nav-links {
+      display: contents;
+    }
+
     .nav a {
       background: rgba(0, 0, 0, 0.3);
       backdrop-filter: blur(10px);
@@ -390,9 +414,36 @@
         font-size: 2.5rem;
       }
       
+      .mobile-menu-button {
+        display: block;
+      }
+
       .nav {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
         gap: 0.8rem;
+        padding: 0 2rem;
+      }
+
+      .nav-links {
+        display: none;
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+      }
+
+      .nav-links.open {
+        display: grid;
+        animation: slideDown 0.3s ease;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
       
       .nav a {
@@ -435,7 +486,11 @@
 
     @media (max-width: 480px) {
       .nav {
-        grid-template-columns: 1fr;
+        padding: 0 1rem;
+      }
+
+      .mobile-menu-button {
+        margin: 0 auto 1rem;
       }
     }
   </style>
@@ -451,13 +506,16 @@
   </div>
 
   <div class="nav">
-    <a href="index.html">Home</a>
-    <a href="gallery.html">Gallery</a>
-    <a href="games.html" class="creative">Games</a>
-    <a href="music.html" class="creative">Music</a>
-    <a href="stories.html">Stories</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
+    <button class="mobile-menu-button" id="mobileMenuButton">☰ Menu</button>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="games.html" class="creative">Games</a>
+      <a href="music.html" class="creative">Music</a>
+      <a href="stories.html">Stories</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
   </div>
 
   <div class="content-container">
@@ -715,6 +773,37 @@
 
     symbols.forEach(symbol => {
       observer.observe(symbol);
+    });
+
+    // Mobile menu functionality
+    const mobileMenuButton = document.getElementById('mobileMenuButton');
+    const navLinks = document.getElementById('navLinks');
+
+    mobileMenuButton.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      
+      // Update button text and icon
+      if (navLinks.classList.contains('open')) {
+        mobileMenuButton.textContent = '✕ Close';
+      } else {
+        mobileMenuButton.textContent = '☰ Menu';
+      }
+    });
+
+    // Close mobile menu when clicking on a link
+    navLinks.addEventListener('click', (e) => {
+      if (e.target.tagName === 'A') {
+        navLinks.classList.remove('open');
+        mobileMenuButton.textContent = '☰ Menu';
+      }
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.nav')) {
+        navLinks.classList.remove('open');
+        mobileMenuButton.textContent = '☰ Menu';
+      }
     });
 
     // Text-to-Speech functionality
