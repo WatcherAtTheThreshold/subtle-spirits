@@ -400,6 +400,105 @@
       animation: particle2 2.5s ease-in-out infinite reverse;
     }
 
+    /* Starburst particles - only visible when active */
+    .orb-starburst {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .orb-starburst::before,
+    .orb-starburst::after {
+      content: '';
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: radial-gradient(circle, rgba(138, 43, 226, 1), rgba(255, 255, 255, 0.8));
+      border-radius: 50%;
+      box-shadow: 0 0 6px rgba(138, 43, 226, 0.8);
+    }
+
+    .orb-starburst::before {
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .orb-starburst::after {
+      bottom: 20px;
+      right: 30px;
+    }
+
+    /* Additional starburst particles using pseudo-elements */
+    .orb-starburst-2 {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .orb-starburst-2::before,
+    .orb-starburst-2::after {
+      content: '';
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 1), rgba(138, 43, 226, 0.6));
+      border-radius: 50%;
+      box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+    }
+
+    .orb-starburst-2::before {
+      top: 30px;
+      right: 25px;
+    }
+
+    .orb-starburst-2::after {
+      bottom: 35px;
+      left: 20px;
+    }
+
+    .orb-starburst-3 {
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .orb-starburst-3::before,
+    .orb-starburst-3::after {
+      content: '';
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: radial-gradient(circle, rgba(138, 43, 226, 0.8), rgba(255, 255, 255, 0.4));
+      border-radius: 50%;
+      box-shadow: 0 0 3px rgba(138, 43, 226, 0.6);
+    }
+
+    .orb-starburst-3::before {
+      top: 40px;
+      left: 40px;
+    }
+
+    .orb-starburst-3::after {
+      bottom: 45px;
+      right: 35px;
+    }
+
     @keyframes particle1 {
       0%, 100% { 
         opacity: 0.4; 
@@ -420,13 +519,6 @@
         opacity: 0.8; 
         transform: scale(1.4);
       }
-    }
-
-    .control-icon {
-      font-size: 1.4rem;
-      z-index: 10;
-      transition: all 0.3s ease;
-      filter: grayscale(1) opacity(0.7);
     }
 
     .control-label {
@@ -517,46 +609,186 @@
       to { transform: rotate(360deg); }
     }
 
-    @keyframes iconGlow {
-      0%, 100% { 
-        text-shadow: 0 0 10px rgba(138, 43, 226, 0.8);
-        transform: scale(1);
+    /* Starburst animations */
+    @keyframes starburst1 {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
       }
-      50% { 
-        text-shadow: 0 0 15px rgba(138, 43, 226, 1), 0 0 25px rgba(138, 43, 226, 0.5);
-        transform: scale(1.05);
+      20% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(2.5);
       }
     }
 
-    /* Shuffle-specific active animation */
-    .dynamic-control.active#shuffleControl .control-icon {
-      animation: iconGlow 3s ease-in-out infinite, shuffleWiggle 1.5s ease-in-out infinite;
+    @keyframes starburst1Before {
+      0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(0) scale(0.5);
+      }
+      20% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-80px) scale(0.3);
+      }
     }
 
-    @keyframes shuffleWiggle {
-      0%, 100% { transform: scale(1) rotate(0deg); }
-      25% { transform: scale(1.05) rotate(-2deg); }
-      75% { transform: scale(1.05) rotate(2deg); }
+    @keyframes starburst1After {
+      0% {
+        opacity: 0;
+        transform: translateX(0) translateY(0) scale(0.5);
+      }
+      20% {
+        opacity: 1;
+        transform: translateX(0) translateY(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(60px) translateY(60px) scale(0.3);
+      }
     }
 
-    /* Repeat-specific active animation */
-    .dynamic-control.active#repeatControl .control-icon {
-      animation: iconGlow 3s ease-in-out infinite, repeatSpin 2s linear infinite;
+    @keyframes starburst2 {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.3);
+      }
+      30% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(3);
+      }
     }
 
-    @keyframes repeatSpin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+    @keyframes starburst2Before {
+      0% {
+        opacity: 0;
+        transform: translateX(0) translateY(0) scale(0.8);
+      }
+      30% {
+        opacity: 1;
+        transform: translateX(0) translateY(0) scale(1.2);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(70px) translateY(-70px) scale(0.2);
+      }
     }
 
-    /* Continuous-specific active animation */
-    .dynamic-control.active#continuousControl .control-icon {
-      animation: iconGlow 3s ease-in-out infinite, continuousPulse 1s ease-in-out infinite;
+    @keyframes starburst2After {
+      0% {
+        opacity: 0;
+        transform: translateX(0) translateY(0) scale(0.6);
+      }
+      30% {
+        opacity: 1;
+        transform: translateX(0) translateY(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(-65px) translateY(75px) scale(0.2);
+      }
     }
 
-    @keyframes continuousPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
+    @keyframes starburst3 {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.4);
+      }
+      40% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(2.8);
+      }
+    }
+
+    @keyframes starburst3Before {
+      0% {
+        opacity: 0;
+        transform: translateX(0) translateY(0) scale(0.7);
+      }
+      40% {
+        opacity: 1;
+        transform: translateX(0) translateY(0) scale(1.1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(-80px) translateY(-60px) scale(0.3);
+      }
+    }
+
+    @keyframes starburst3After {
+      0% {
+        opacity: 0;
+        transform: translateX(0) translateY(0) scale(0.9);
+      }
+      40% {
+        opacity: 1;
+        transform: translateX(0) translateY(0) scale(1.3);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(85px) translateY(-85px) scale(0.2);
+      }
+    }
+
+    /* Active starburst effects */
+    .dynamic-control.active .orb-starburst {
+      opacity: 1;
+      animation: starburst1 2s ease-out infinite;
+    }
+
+    .dynamic-control.active .orb-starburst::before {
+      animation: starburst1Before 2s ease-out infinite;
+    }
+
+    .dynamic-control.active .orb-starburst::after {
+      animation: starburst1After 2s ease-out infinite;
+    }
+
+    .dynamic-control.active .orb-starburst-2 {
+      opacity: 1;
+      animation: starburst2 2.5s ease-out infinite;
+      animation-delay: 0.3s;
+    }
+
+    .dynamic-control.active .orb-starburst-2::before {
+      animation: starburst2Before 2.5s ease-out infinite;
+      animation-delay: 0.3s;
+    }
+
+    .dynamic-control.active .orb-starburst-2::after {
+      animation: starburst2After 2.5s ease-out infinite;
+      animation-delay: 0.3s;
+    }
+
+    .dynamic-control.active .orb-starburst-3 {
+      opacity: 1;
+      animation: starburst3 3s ease-out infinite;
+      animation-delay: 0.6s;
+    }
+
+    .dynamic-control.active .orb-starburst-3::before {
+      animation: starburst3Before 3s ease-out infinite;
+      animation-delay: 0.6s;
+    }
+
+    .dynamic-control.active .orb-starburst-3::after {
+      animation: starburst3After 3s ease-out infinite;
+      animation-delay: 0.6s;
     }
 
     .tracks-grid {
@@ -1136,8 +1368,19 @@
         height: 86px;
       }
 
-      .control-icon {
-        font-size: 1.2rem;
+      .orb-starburst {
+        width: 100px;
+        height: 100px;
+      }
+
+      .orb-starburst-2 {
+        width: 115px;
+        height: 115px;
+      }
+
+      .orb-starburst-3 {
+        width: 130px;
+        height: 130px;
       }
 
       .control-label {
@@ -1243,8 +1486,19 @@
         height: 76px;
       }
 
-      .control-icon {
-        font-size: 1rem;
+      .orb-starburst {
+        width: 90px;
+        height: 90px;
+      }
+
+      .orb-starburst-2 {
+        width: 105px;
+        height: 105px;
+      }
+
+      .orb-starburst-3 {
+        width: 120px;
+        height: 120px;
       }
 
       .control-label {
@@ -1290,7 +1544,9 @@
           <div class="orb-core"></div>
           <div class="orb-ring"></div>
           <div class="orb-particles"></div>
-          <div class="control-icon">🔀</div>
+          <div class="orb-starburst"></div>
+          <div class="orb-starburst-2"></div>
+          <div class="orb-starburst-3"></div>
         </div>
         <span class="control-label">Shuffle</span>
       </div>
@@ -1300,7 +1556,9 @@
           <div class="orb-core"></div>
           <div class="orb-ring"></div>
           <div class="orb-particles"></div>
-          <div class="control-icon">🔁</div>
+          <div class="orb-starburst"></div>
+          <div class="orb-starburst-2"></div>
+          <div class="orb-starburst-3"></div>
         </div>
         <span class="control-label">Repeat All</span>
       </div>
@@ -1310,7 +1568,9 @@
           <div class="orb-core"></div>
           <div class="orb-ring"></div>
           <div class="orb-particles"></div>
-          <div class="control-icon">▶️</div>
+          <div class="orb-starburst"></div>
+          <div class="orb-starburst-2"></div>
+          <div class="orb-starburst-3"></div>
         </div>
         <span class="control-label">Continuous</span>
       </div>
