@@ -175,6 +175,32 @@
       display: contents;
     }
 
+    .cruxfade-link {
+      font-size: 1.3rem;
+      color: rgba(255, 255, 255, 0.7) !important;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem !important;
+      border: 1px solid rgba(255, 255, 255, 0.3) !important;
+      border-radius: 8px;
+      backdrop-filter: blur(5px);
+      background: transparent !important;
+      box-shadow: none !important;
+      transform: none !important;
+      height: 60px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    .cruxfade-link:hover {
+      color: #fff !important;
+      border-color: rgba(255, 255, 255, 0.6) !important;
+      background: rgba(255, 255, 255, 0.1) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
+    }
+
     .nav a {
       background: rgba(0, 0, 0, 0.3);
       backdrop-filter: blur(10px);
@@ -966,6 +992,7 @@
       <a href="stories.html">Stories</a>
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
+      <a href="https://watcheratthethreshold.github.io/subtle-sprits-cruxfade/" class="cruxfade-link" title="Enter Cruxfade">⟁ Cruxfade</a>
     </div>
   </div>
 
@@ -979,6 +1006,13 @@
       <button class="control-button" id="shuffleButton">🔀 Shuffle</button>
       <button class="control-button" id="repeatButton">🔁 Repeat All</button>
       <button class="control-button" id="continuousButton">▶️ Continuous</button>
+    </div>
+
+    <div class="intro-section" style="margin-bottom: 2rem; padding: 1.5rem; font-size: 0.9rem;">
+      <p style="margin-bottom: 1rem;"><strong>Playback Controls:</strong></p>
+      <p style="margin-bottom: 0.75rem;"><strong>🔀 Shuffle:</strong> Plays tracks in random order instead of sequential</p>
+      <p style="margin-bottom: 0.75rem;"><strong>🔁 Repeat All:</strong> Loops back to the first track after the playlist ends</p>
+      <p style="margin-bottom: 0;"><strong>▶️ Continuous:</strong> Automatically plays the next track when the current one ends</p>
     </div>
 
     <div class="tracks-grid">
