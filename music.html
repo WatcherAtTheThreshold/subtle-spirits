@@ -306,9 +306,9 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 2rem;
+      gap: 3rem;
       margin-bottom: 3rem;
-      padding: 1.5rem;
+      padding: 2rem;
       background: rgba(0, 0, 0, 0.3);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -320,29 +320,243 @@
       margin-bottom: 3rem;
     }
 
-    .control-button {
-      background: rgba(0, 0, 0, 0.4);
-      color: rgba(255, 255, 255, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
+    .dynamic-control {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
       cursor: pointer;
       transition: all 0.3s ease;
-      font-size: 0.9rem;
-      font-family: 'Source Sans Pro', sans-serif;
+      position: relative;
     }
 
-    .control-button:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.3);
+    .dynamic-control:hover {
+      transform: translateY(-3px);
+    }
+
+    .control-orb {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    .orb-core {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(circle, rgba(138, 43, 226, 0.2), rgba(138, 43, 226, 0.05));
+      border: 2px solid rgba(138, 43, 226, 0.3);
+      border-radius: 50%;
+      transition: all 0.4s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    .orb-ring {
+      position: absolute;
+      width: 76px;
+      height: 76px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      border-top-color: rgba(138, 43, 226, 0.4);
+      border-right-color: rgba(138, 43, 226, 0.2);
+      transition: all 0.6s ease;
+      opacity: 0;
+    }
+
+    .orb-particles {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      opacity: 0;
+      transition: all 0.4s ease;
+    }
+
+    .orb-particles::before,
+    .orb-particles::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(138, 43, 226, 0.6);
+      border-radius: 50%;
+      transition: all 0.4s ease;
+    }
+
+    .orb-particles::before {
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: particle1 3s ease-in-out infinite;
+    }
+
+    .orb-particles::after {
+      bottom: 10px;
+      right: 20px;
+      animation: particle2 2.5s ease-in-out infinite reverse;
+    }
+
+    @keyframes particle1 {
+      0%, 100% { 
+        opacity: 0.4; 
+        transform: translateX(-50%) scale(0.8);
+      }
+      50% { 
+        opacity: 1; 
+        transform: translateX(-50%) scale(1.2);
+      }
+    }
+
+    @keyframes particle2 {
+      0%, 100% { 
+        opacity: 0.3; 
+        transform: scale(0.6);
+      }
+      50% { 
+        opacity: 0.8; 
+        transform: scale(1.4);
+      }
+    }
+
+    .control-icon {
+      font-size: 1.4rem;
+      z-index: 10;
+      transition: all 0.3s ease;
+      filter: grayscale(1) opacity(0.7);
+    }
+
+    .control-label {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 400;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    /* Hover States */
+    .dynamic-control:hover .orb-core {
+      background: radial-gradient(circle, rgba(138, 43, 226, 0.3), rgba(138, 43, 226, 0.1));
+      border-color: rgba(138, 43, 226, 0.5);
+      box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+      transform: scale(1.05);
+    }
+
+    .dynamic-control:hover .orb-ring {
+      opacity: 1;
+      transform: rotate(90deg);
+    }
+
+    .dynamic-control:hover .orb-particles {
+      opacity: 1;
+    }
+
+    .dynamic-control:hover .control-icon {
+      filter: grayscale(0) opacity(1);
+      transform: scale(1.1);
+    }
+
+    .dynamic-control:hover .control-label {
       color: rgba(255, 255, 255, 0.9);
       transform: translateY(-2px);
     }
 
-    .control-button.active {
-      background: rgba(138, 43, 226, 0.3);
-      border-color: rgba(138, 43, 226, 0.5);
-      color: rgba(138, 43, 226, 1);
+    /* Active States */
+    .dynamic-control.active .orb-core {
+      background: radial-gradient(circle, rgba(138, 43, 226, 0.6), rgba(138, 43, 226, 0.2));
+      border-color: rgba(138, 43, 226, 0.8);
+      box-shadow: 0 0 30px rgba(138, 43, 226, 0.5), inset 0 0 20px rgba(138, 43, 226, 0.2);
+      animation: orbPulse 2s ease-in-out infinite;
+    }
+
+    .dynamic-control.active .orb-ring {
+      opacity: 1;
+      border-color: rgba(138, 43, 226, 0.6);
+      animation: ringRotate 4s linear infinite;
+    }
+
+    .dynamic-control.active .orb-particles {
+      opacity: 1;
+      animation: particleOrbit 6s linear infinite;
+    }
+
+    .dynamic-control.active .control-icon {
+      filter: grayscale(0) opacity(1);
+      color: #fff;
+      text-shadow: 0 0 10px rgba(138, 43, 226, 0.8);
+      animation: iconGlow 3s ease-in-out infinite;
+    }
+
+    .dynamic-control.active .control-label {
+      color: rgba(138, 43, 226, 0.9);
+      font-weight: 500;
+      text-shadow: 0 0 8px rgba(138, 43, 226, 0.5);
+    }
+
+    @keyframes orbPulse {
+      0%, 100% { 
+        transform: scale(1);
+        box-shadow: 0 0 30px rgba(138, 43, 226, 0.5), inset 0 0 20px rgba(138, 43, 226, 0.2);
+      }
+      50% { 
+        transform: scale(1.02);
+        box-shadow: 0 0 40px rgba(138, 43, 226, 0.7), inset 0 0 25px rgba(138, 43, 226, 0.3);
+      }
+    }
+
+    @keyframes ringRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes particleOrbit {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes iconGlow {
+      0%, 100% { 
+        text-shadow: 0 0 10px rgba(138, 43, 226, 0.8);
+        transform: scale(1);
+      }
+      50% { 
+        text-shadow: 0 0 15px rgba(138, 43, 226, 1), 0 0 25px rgba(138, 43, 226, 0.5);
+        transform: scale(1.05);
+      }
+    }
+
+    /* Shuffle-specific active animation */
+    .dynamic-control.active#shuffleControl .control-icon {
+      animation: iconGlow 3s ease-in-out infinite, shuffleWiggle 1.5s ease-in-out infinite;
+    }
+
+    @keyframes shuffleWiggle {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      25% { transform: scale(1.05) rotate(-2deg); }
+      75% { transform: scale(1.05) rotate(2deg); }
+    }
+
+    /* Repeat-specific active animation */
+    .dynamic-control.active#repeatControl .control-icon {
+      animation: iconGlow 3s ease-in-out infinite, repeatSpin 2s linear infinite;
+    }
+
+    @keyframes repeatSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Continuous-specific active animation */
+    .dynamic-control.active#continuousControl .control-icon {
+      animation: iconGlow 3s ease-in-out infinite, continuousPulse 1s ease-in-out infinite;
+    }
+
+    @keyframes continuousPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
     }
 
     .tracks-grid {
@@ -892,8 +1106,40 @@
 
       .playlist-controls {
         flex-direction: column;
-        gap: 1rem;
-        padding: 1rem;
+        gap: 2rem;
+        padding: 1.5rem;
+      }
+
+      .dynamic-control {
+        gap: 0.75rem;
+      }
+
+      .control-orb {
+        width: 70px;
+        height: 70px;
+      }
+
+      .orb-core {
+        width: 50px;
+        height: 50px;
+      }
+
+      .orb-ring {
+        width: 66px;
+        height: 66px;
+      }
+
+      .orb-particles {
+        width: 86px;
+        height: 86px;
+      }
+
+      .control-icon {
+        font-size: 1.2rem;
+      }
+
+      .control-label {
+        font-size: 0.85rem;
       }
 
       .now-playing-bar {
@@ -968,6 +1214,40 @@
       .back-to-top.music-playing {
         bottom: 95px;
       }
+
+      .playlist-controls {
+        flex-direction: row;
+        gap: 1.5rem;
+        padding: 1rem;
+      }
+
+      .control-orb {
+        width: 60px;
+        height: 60px;
+      }
+
+      .orb-core {
+        width: 40px;
+        height: 40px;
+      }
+
+      .orb-ring {
+        width: 56px;
+        height: 56px;
+      }
+
+      .orb-particles {
+        width: 76px;
+        height: 76px;
+      }
+
+      .control-icon {
+        font-size: 1rem;
+      }
+
+      .control-label {
+        font-size: 0.75rem;
+      }
     }
   </style>
 </head>
@@ -1003,16 +1283,35 @@
     </div>
 
     <div class="playlist-controls">
-      <button class="control-button" id="shuffleButton">🔀 Shuffle</button>
-      <button class="control-button" id="repeatButton">🔁 Repeat All</button>
-      <button class="control-button" id="continuousButton">▶️ Continuous</button>
-    </div>
-
-    <div class="intro-section" style="margin-bottom: 2rem; padding: 1.5rem; font-size: 0.9rem;">
-      <p style="margin-bottom: 1rem;"><strong>Playback Controls:</strong></p>
-      <p style="margin-bottom: 0.75rem;"><strong>🔀 Shuffle:</strong> Plays tracks in random order instead of sequential</p>
-      <p style="margin-bottom: 0.75rem;"><strong>🔁 Repeat All:</strong> Loops back to the first track after the playlist ends</p>
-      <p style="margin-bottom: 0;"><strong>▶️ Continuous:</strong> Automatically plays the next track when the current one ends</p>
+      <div class="dynamic-control" id="shuffleControl">
+        <div class="control-orb">
+          <div class="orb-core"></div>
+          <div class="orb-ring"></div>
+          <div class="orb-particles"></div>
+          <div class="control-icon">🔀</div>
+        </div>
+        <span class="control-label">Shuffle</span>
+      </div>
+      
+      <div class="dynamic-control" id="repeatControl">
+        <div class="control-orb">
+          <div class="orb-core"></div>
+          <div class="orb-ring"></div>
+          <div class="orb-particles"></div>
+          <div class="control-icon">🔁</div>
+        </div>
+        <span class="control-label">Repeat All</span>
+      </div>
+      
+      <div class="dynamic-control" id="continuousControl">
+        <div class="control-orb">
+          <div class="orb-core"></div>
+          <div class="orb-ring"></div>
+          <div class="orb-particles"></div>
+          <div class="control-icon">▶️</div>
+        </div>
+        <span class="control-label">Continuous</span>
+      </div>
     </div>
 
     <div class="tracks-grid">
@@ -1947,9 +2246,9 @@
     const nextButton = document.getElementById('nextButton');
 
     // Control buttons
-    const shuffleButton = document.getElementById('shuffleButton');
-    const repeatButton = document.getElementById('repeatButton');
-    const continuousButton = document.getElementById('continuousButton');
+    const shuffleControl = document.getElementById('shuffleControl');
+    const repeatControl = document.getElementById('repeatControl');
+    const continuousControl = document.getElementById('continuousControl');
 
     let currentTrack = null;
     let currentCard = null;
@@ -1965,27 +2264,27 @@
     });
 
     // Control button functionality
-    shuffleButton.addEventListener('click', () => {
+    shuffleControl.addEventListener('click', () => {
       isShuffled = !isShuffled;
-      shuffleButton.classList.toggle('active', isShuffled);
+      shuffleControl.classList.toggle('active', isShuffled);
       if (isShuffled) {
         isRepeating = false;
-        repeatButton.classList.remove('active');
+        repeatControl.classList.remove('active');
       }
     });
 
-    repeatButton.addEventListener('click', () => {
+    repeatControl.addEventListener('click', () => {
       isRepeating = !isRepeating;
-      repeatButton.classList.toggle('active', isRepeating);
+      repeatControl.classList.toggle('active', isRepeating);
       if (isRepeating) {
         isShuffled = false;
-        shuffleButton.classList.remove('active');
+        shuffleControl.classList.remove('active');
       }
     });
 
-    continuousButton.addEventListener('click', () => {
+    continuousControl.addEventListener('click', () => {
       isContinuous = !isContinuous;
-      continuousButton.classList.toggle('active', isContinuous);
+      continuousControl.classList.toggle('active', isContinuous);
     });
 
     // Format time helper
